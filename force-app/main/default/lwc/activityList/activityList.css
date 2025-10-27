@@ -1,0 +1,35 @@
+/* pastikan tombol tidak terlalu kecil */
+.header-select-button {
+    min-width: 10rem;
+}
+
+/* wrapper di slot actions jadi flex supaya sejajar vertikal dengan title */
+.actions-slot {
+    display: flex;
+    align-items: center; /* vertikal center */
+    gap: 0.5rem;
+    padding-right: 0.5rem; /* sedikit jarak ke kanan jika perlu */
+}
+
+/* pastikan header card align items center (scoped ke component) */
+:host .slds-card__header {
+    align-items: center;
+}
+
+/* jangan biarkan judul mem-break ke baris baru; pakai ellipsis kalau kepanjangan */
+:host .slds-card__header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 12rem); /* beri ruang agar tombol tidak tumpang tindih */
+}
+
+/* (opsional) jika header punya icon/extra, sesuaikan padding */
+:host .slds-card__header .slds-media__body {
+    min-width: 0; /* supaya ellipsis bekerja */
+}
+
+.datatable-wrapper {
+    margin: 0 1rem; /* samakan margin kiri-kanan dengan header default */
+}
+

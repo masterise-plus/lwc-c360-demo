@@ -1,0 +1,83 @@
+<template>
+    <lightning-card title="Search Customer" icon-name="standard:search">
+        <div class="search-card-container">
+
+            <!-- Semua field dalam 1 baris -->
+            <div class="search-bar">
+
+                <!-- Search Field dropdown -->
+                <div class="field-item">
+                    <lightning-combobox
+                        label="Field"
+                        value={searchField}
+                        options={searchOptions}
+                        onchange={handleFieldChange}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Keyword input + suggestion box -->
+                <div class="field-item keyword-container">
+                    <lightning-input
+                        type="text"
+                        label="Keyword"
+                        value={searchKey}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+
+                    <!-- Dropdown suggestion -->
+                    <template if:true={showSuggestions}>
+                        <div class="suggestion-box slds-box slds-m-top_xx-small">
+                            <template for:each={suggestions} for:item="s">
+                                <div
+                                    key={s.value}
+                                    class="suggestion-item"
+                                    data-value={s.value}
+                                    onclick={handleSuggestionClick}>
+                                    {s.label}
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Search button, hanya muncul saat searchField = Id -->
+                <template if:true={isSearchById}>
+                    <div class="field-item button-container">
+                        <lightning-button
+                            label="Search"
+                            variant="brand"
+                            onclick={handleSearchClick}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </div>
+                </template>
+
+            </div>
+
+            <!-- Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+
+            <!-- Datatable -->
+            <!-- <template if:true={records}>
+                <lightning-datatable
+                    class="slds-m-top_medium"
+                    key-field="ssot__Id__c"
+                    data={records}
+                    columns={columns}>
+                </lightning-datatable>
+            </template> -->
+
+            <!-- No Results -->
+            <template if:true={noResults}>
+                <p class="slds-text-body_small slds-m-top_medium">No records found.</p>
+            </template>
+
+            <!-- Error -->
+            <template if:true={error}>
+                <p class="slds-text-color_error slds-m-top_medium">{error}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

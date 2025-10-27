@@ -1,0 +1,14 @@
+// Use .soql files to store SOQL queries.
+// You can execute queries in VS Code by selecting the
+//     query text and running the command:
+//     SFDX: Execute SOQL Query with Currently Selected Text
+
+SELECT
+    UnifiedIndividual__r.ssot__Id__c,
+    UnifiedIndividual__r.ssot__FirstName__c,
+    UnifiedIndividual__r.ssot__LastName__c,
+    UnifiedIndividual__r.Officer_Position__c,
+    SourceRecordId__c
+FROM IndividualIdentityLink__dlm
+WHERE UnifiedIndividual__r.ssot__Id__c != null
+

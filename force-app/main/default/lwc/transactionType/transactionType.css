@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    /* border-radius: 12px; */
+    /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+    margin: 10px 0;
+}
+
+.type-box {
+    flex: 1;
+    text-align: center;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.value.online {
+    color: #0070d2; /* Salesforce blue */
+}
+
+.value.offline {
+    color: #2e8540; /* green tone */
+}
+
+.divider {
+    width: 1px;
+    height: 50px;
+    background-color: #ddd;
+    margin: 0 12px;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    padding: 24px;
+    font-size: 14px;
+}

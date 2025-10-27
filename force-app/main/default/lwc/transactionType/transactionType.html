@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Transaction Type" icon-name="standard:calculated_insights">
+        <template if:true={isLoading}>
+            <div class="loading">Loading...</div>
+        </template>
+
+        <template if:false={isLoading}>
+            <div class="container">
+                <div class="type-box">
+                    <div class="label">Online</div>
+                    <div class="value online">{onlineTransaction}</div>
+                </div>
+                <div class="divider"></div>
+                <div class="type-box">
+                    <div class="label">Offline</div>
+                    <div class="value offline">{offlineTransaction}</div>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

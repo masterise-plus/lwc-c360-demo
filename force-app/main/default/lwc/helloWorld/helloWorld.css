@@ -1,0 +1,61 @@
+/* Semua komponen sejajar horizontal */
+.search-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+
+/* Setiap komponen punya lebar proporsional */
+.field-item {
+    flex: 1;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 200px;
+}
+
+/* Keyword input area + dropdown suggestion */
+.keyword-container {
+    position: relative;
+    flex: 2; /* sedikit lebih lebar dari combobox */
+    max-width: 250px;
+}
+
+/* Dropdown suggestion */
+.suggestion-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 5;
+}
+
+.suggestion-item {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background-color: #f3f6f9;
+}
+
+/* Tombol sedikit turun agar sejajar bawah input */
+.button-container {
+    padding-bottom: 0.25rem;
+}
+
+/* Responsif: tumpuk ke bawah jika layar kecil */
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .field-item {
+        width: 100%;
+    }
+}

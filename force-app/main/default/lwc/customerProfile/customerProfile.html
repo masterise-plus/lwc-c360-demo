@@ -1,0 +1,131 @@
+<template>
+    <lightning-card title="Customer Profile" icon-name="standard:person_account">
+        <template if:true={record}>
+            <div class="profile-container">
+                <!-- Header -->
+                <div class="profile-header">
+                    <div class="profile-name">{record.FullName}</div>
+                    <div class="profile-city">{record.City__c}</div>
+                </div>
+
+                <!-- Informasi utama -->
+                <div class="info-section">
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:identity" size="x-small"></lightning-icon>
+                        <span class="label">Customer ID</span>
+                        <span class="value">{record.ssot__Id__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:email" size="x-small"></lightning-icon>
+                        <span class="label">Email Address</span>
+                        <span class="value">{record.ssot__EmailAddress__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:call" size="x-small"></lightning-icon>
+                        <span class="label">Phone Number</span>
+                        <span class="value">{record.phone_number}</span>
+                    </div>
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Segment Section -->
+                <div class="segment-section">
+                    <div class="segment-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:chart" size="x-small"></lightning-icon>
+                        </span>
+                        <span class="label">Segment</span>
+                    </div>
+
+                    <div class="segment-list">
+                        <template for:each={record.Segment_Display_Names} for:item="segmentName">
+                            <div key={segmentName} class="segment-badge">{segmentName}</div>
+                        </template>
+
+                        <template if:false={record.Segment_Display_Names.length}>
+                            <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                        </template>
+                    </div>
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Lifetime Value -->
+                <div class="lifetime-section">
+                    <span class="icon-frame">
+                        <lightning-icon class="white-icon" icon-name="utility:cart" size="x-small" ></lightning-icon>
+                    </span>
+                    <span class="label">Lifetime Value</span>
+                    <span class="value">Rp {record.LTV}</span>
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Engagement Score Section -->
+                <div class="engagement-container">
+                    <div class="engagement-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:adduser" size="x-small"></lightning-icon>
+                        </span>
+                        <span class="engagement-title">Engagement Score</span>                        
+                    </div>
+
+
+                    <div class="gauge-wrapper">
+                        <svg viewBox="0 0 100 50" class="gauge">
+                            <!-- background arc -->
+                            <path
+                                d="M10,45 A40,40 0 0,1 90,45"
+                                stroke="#e0e0e0"
+                                stroke-width="8"
+                                fill="none"
+                                stroke-linecap="round">
+                            </path>
+
+                            <!-- dynamic arc -->
+                            <path
+                                d="M10,45 A40,40 0 0,1 90,45"
+                                stroke={gaugeColor}
+                                stroke-width="8"
+                                fill="none"
+                                stroke-linecap="round"
+                                style={gaugeStyle}>
+                            </path>
+                        </svg>
+
+                        <div class="engagement-text">
+                            <span class="engagement-percent">{record.engagement_score}%</span>
+                            <span class = engagement-percent> - </span>
+                            <span class="status">{record.engagement_label}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Profile Data -->
+                <div class="profile-data-section">
+                    <div class="profile-data-row">
+                        <span class="label">Profile Data:</span>
+                        <div class="icon-group">
+                            <lightning-icon icon-name="utility:profile_alt" size="small" class="white-icon"></lightning-icon>
+                            <lightning-icon icon-name="utility:cart" size="small" class="white-icon"></lightning-icon>
+                            <lightning-icon icon-name="utility:heart" size="small" class="white-icon"></lightning-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+        <template if:true={error}>
+            <p class="slds-text-color_error slds-p-around_medium">{error}</p>
+        </template>
+    </lightning-card>
+</template>

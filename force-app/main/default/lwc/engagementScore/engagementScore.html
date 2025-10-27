@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Email Engagement Scoring" icon-name="standard:email_chatter">
+        <template if:true={data}>
+            <div class="data-wrapper">
+                <template for:each={channels} for:item="ch">
+                    <div key={ch.label} class="engagement-row">
+                        <div class="engagement-label">
+                            <span>{ch.label}</span>
+                        </div>
+                        <div class="bar-wrapper">
+                            <div class="bar-bg">
+                                <div class="bar-fill" style={ch.style}></div>
+                            </div>
+                            <div class="bar-score">{ch.value} / 1.00</div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template if:true={isLoading}>
+            <div class="slds-align_absolute-center slds-p-vertical_medium">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <p class="slds-text-color_error slds-p-around_medium">{error}</p>
+        </template>
+    </lightning-card>
+</template>

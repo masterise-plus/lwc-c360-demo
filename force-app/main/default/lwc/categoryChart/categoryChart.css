@@ -1,0 +1,15 @@
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    max-height: 200px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}

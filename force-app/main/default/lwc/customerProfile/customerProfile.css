@@ -1,0 +1,256 @@
+.custom-card {
+    border: none;
+}
+
+.white-icon {
+    --sds-c-icon-color-foreground-default: #1b3b6f;=
+    min-width: 1.8rem;
+}
+
+/* Background putih */
+.profile-container {
+    background-color: #ffffff;
+    color: rgb(116, 116, 116);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: "Salesforce Sans", Arial, sans-serif;
+}
+
+/* Header */
+.profile-header {
+    text-align: left;
+    padding-bottom: 2.5rem;
+}
+
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1b3b6f; /* biru navy */
+}
+
+.profile-city {
+    font-size: 1rem;
+    font-weight: lighter;   
+    color: #1b3b6f; /* biru navy */
+}
+
+/* Informasi utama */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.info-item .label {
+    min-width: 8rem;
+    color: rgb(116, 116, 116); /* abu lembut */
+}
+
+.info-item .value {
+    font-weight: 600;
+    color: #1b3b6f;
+}
+
+
+.divider {
+    border: none;
+    border-top: 1px solid #dcdcdc;
+    margin: 1.5rem 0;
+}
+
+/* Segment section */
+.segment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.segment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.segment-header .label {
+    font-size: 1rem;
+    color: rgb(116, 116, 116);
+}
+
+.segment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.2rem;
+    margin-left: calc(1.8rem + 0.4rem);
+}
+
+
+.segment-badge {
+    background-color: #3EB489;
+    color: #ffffff;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Lifetime section */
+.lifetime-section {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    /* padding-bottom: 1rem; */
+}
+
+.lifetime-section .label {
+    min-width: 8rem;
+    color: rgb(116, 116, 116);
+    font-size: 1rem;
+}
+
+.lifetime-section .value {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1b3b6f;
+}
+
+/* Engagement Section */
+.engagement-container {
+    color: #1b3b6f;
+    /* padding: 1rem 0; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.engagement-header {
+    display: flex;
+    align-items: center;
+    /* gap: 0.4rem; */
+}
+
+.engagement-title {
+    font-size: 1rem;
+    color: rgb(116, 116, 116);
+}
+
+.engagement-percent {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1b3b6f;
+}
+
+
+/* --- GAUGE STYLE --- */
+.gauge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: calc(1.8rem + 0.4rem);
+}
+
+.gauge {
+    width: 70px;
+    height: 35px;
+}
+
+.gauge path {
+    transition: stroke-dashoffset 0.6s ease, stroke 0.3s ease;
+}
+
+.engagement-text {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    gap: 0.6rem
+}
+
+.status {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+
+/* Profile Data Section */
+.profile-data-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-bottom: 1rem;
+}
+
+.profile-data-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.profile-data-row .label {
+    min-width: 6rem;
+    color: rgb(116, 116, 116);
+    font-size: 1rem;
+}
+
+.icon-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* jarak antar ikon */
+}
+
+:host .slds-card {
+    border: none;
+    box-shadow: none;
+}
+
+:host {
+    --sds-c-icon-color-foreground: #ffffff;
+    color: #1b3b6f;
+    border: none;
+    --sds-c-card-body-padding: 0px;
+    --sds-c-card-body-margin: 0;
+}
+
+.slds-card{
+    background: #1b3b6f;
+}
+
+
+.icon-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgb(116, 116, 116);
+  padding: 4px;
+  margin-right: 0.6rem;
+  box-sizing: border-box;
+}
+
+.icon-frame .white-icon {
+  min-width: 0 !important;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 420px) {
+  .icon-frame { width: 32px; height: 32px; padding: 5px; }
+  .icon-frame--small { width: 26px; height: 26px; padding: 3px; }
+}

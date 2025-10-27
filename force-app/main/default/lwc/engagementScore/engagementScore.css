@@ -1,0 +1,60 @@
+:host {
+    --bar-bg-color: #e0e7ec;
+    --label-color: #000000;
+    --value-color: #252525;
+}
+
+.data-wrapper {
+    margin: 0 1rem; /* samakan margin kiri-kanan dengan header default */
+}
+
+.engagement-container {
+    padding: 1rem;
+    background: linear-gradient(160deg, #3474A1 0%, #4B8BAF 100%);
+    border-radius: 0 0 0.75rem 0.75rem;
+    color: var(--label-color);
+}
+
+.engagement-row {
+    margin-bottom: 1rem;
+}
+
+.engagement-label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.engagement-label .icon {
+    margin-right: 0.4rem;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bar-bg {
+    flex: 1;
+    height: 10px;
+    background-color: var(--bar-bg-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.bar-score {
+    min-width: 50px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--value-color);
+}
