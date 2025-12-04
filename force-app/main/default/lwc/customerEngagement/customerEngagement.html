@@ -14,15 +14,22 @@
                         <div class="content">
                             <div class="title">{item.eventName}</div>
                             <div class="border-line">
-                            <div class="desc">{item.eventDescription}</div>
-                            <div class="time-container">
-                                <span>
-                                    <lightning-icon icon-name="utility:clock" size="xx-small"></lightning-icon>
-                                </span>
-                                <span class="time"> {item.timeElapsed}</span>
+                                <div class="desc">
+                                    
+                                    <span class="value">{item.eventDescription}</span>
+                                </div>
+                                <div class="badge-row">
+                                    <span class="label">Business Unit:</span>
+                                    <lightning-badge class="bu-badge" label={item.businessunits}></lightning-badge>
+                                </div>
+                                <div class="time-container">
+                                    <span>
+                                        <lightning-icon icon-name="utility:clock" size="xx-small"></lightning-icon>
+                                    </span>
+                                    <span class="time"> {item.timeElapsed}</span>
+                                </div>
                             </div>
-                            </div>
-                            
+
                         </div>
                     </div>
                 </template>

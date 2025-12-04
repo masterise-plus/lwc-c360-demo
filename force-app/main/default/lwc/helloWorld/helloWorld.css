@@ -2,7 +2,7 @@
 .search-bar {
     display: flex;
     align-items: flex-end;
-    gap: 1rem;
+    gap: 0.3rem;
 }
 
 
@@ -42,6 +42,7 @@
 }
 .suggestion-item:hover {
     background-color: #f3f6f9;
+    color: rgb(2, 45, 234);
 }
 
 /* Tombol sedikit turun agar sejajar bawah input */

@@ -1,12 +1,27 @@
 <template>
-    <lightning-card title="Customer Profile" icon-name="standard:person_account">
+    <lightning-card title="Customer Profile" icon-name="standard:person_account"> 
         <template if:true={record}>
             <div class="profile-container">
                 <!-- Header -->
                 <div class="profile-header">
-                    <div class="profile-name">{record.FullName}</div>
-                    <div class="profile-city">{record.City__c}</div>
+                    <div class="profile-photo">
+                        <template if:true={record.ssot__PhotoURL__c}>
+                            <img src="https://high-plum-wey2dxbnkm.edgeone.app/3a7d4410-ffeb-4e21-bfab-6b485b10ebcb.png"
+                                alt="Profile Photo"
+                                class="profile-img"
+                                onerror={handleImageError} />
+                        </template>
+                        <template if:false={record.ssot__PhotoURL__c}>
+                            <lightning-icon icon-name="standard:user" size="large" class="profile-img-icon"></lightning-icon>
+                        </template>
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="profile-name">{record.FullName}</div>
+                        <div class="profile-city">{record.City__c}</div>
+                    </div>
                 </div>
+
 
                 <!-- Informasi utama -->
                 <div class="info-section">
@@ -61,6 +76,47 @@
                     <span class="label">Lifetime Value</span>
                     <span class="value">Rp {record.LTV}</span>
                 </div>
+
+                <div class="preferred-list">
+                    <div class="preferred-list-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:case" size="x-small" ></lightning-icon>
+                        </span>
+                        <span class="label">Preferred Payment</span>
+                    </div>
+                    <div>
+                        <template if:true={preferredPayments}>
+                            <div class="payment-card">
+                                <div class="payment-scroll">
+                                    <table class="payment-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Business Unit</th>
+                                                <th>Preferred Bank</th>
+                                                <th>Preferred Method</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={preferredPayments} for:item="item">
+                                                <tr key={item.bu}>
+                                                    <td>{item.bu}</td>
+                                                    <td>{item.paymentBank}</td>
+                                                    <td>{item.paymentMethod}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </template>
+    
+                        <template if:false={preferredPayments.length}>
+                            <div class="slds-text-body_small slds-p-around_medium">No preferred payment data available.</div>
+                        </template>
+                    </div>
+                </div>
+
+
 
                 <hr class="divider" />
 

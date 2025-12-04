@@ -20,7 +20,7 @@ export default class CustomerEngagement extends LightningElement {
     }
 
     handleRecordSelection(message) {
-        console.log('🧩 recordId received from message:', message.recordId);
+        console.log('?? recordId received from message:', message.recordId);
 
         if (!message || !message.recordId) {
             this.error = 'Invalid recordId received';
@@ -33,18 +33,21 @@ export default class CustomerEngagement extends LightningElement {
 
         getCustomerEngagement({ unifiedId: message.recordId })
             .then((result) => {
-                console.log('📦 Engagement data:', JSON.stringify(result, null, 2));
+                console.log('?? Engagement data:', JSON.stringify(result, null, 2));
                 if (result && result.length > 0) {
                     this.engagements = result.map((row) => {
                         const eventName = row.event_name || '';
                         const eventDescription = row.event_description || '';
                         const timeElapsed = row.time_elapsed || '';
+                        // Normalize business unit coming from Data Lake Object (DLO)
+                        const businessunits = row.businessunits ||'';
 
                         return {
                             eventName,
                             eventDescription,
                             timeElapsed,
-                            iconName: this.getIconName(eventName) // ✅ tambahkan iconName di sini
+                            businessunits,
+                            iconName: this.getIconName(eventName) // ? tambahkan iconName di sini
                         };
                     });
                 } else {
@@ -52,7 +55,7 @@ export default class CustomerEngagement extends LightningElement {
                 }
             })
             .catch((error) => {
-                console.error('❌ Error fetching engagement:', error);
+                console.error('? Error fetching engagement:', error);
                 this.error = error?.body?.message || error.message;
                 this.engagements = [];
             })

@@ -2,12 +2,14 @@ import { LightningElement, wire, track } from 'lwc';
 import { subscribe, MessageContext } from 'lightning/messageService';
 import RECORD_SELECTED_CHANNEL from '@salesforce/messageChannel/UnifiedIndividualSelected__c';
 import getUnifiedIndividualById from '@salesforce/apex/Customer360Controller.getUnifiedIndividualById';
+import getPreferredPaymentPerBU from '@salesforce/apex/Customer360Controller.getPreferredPaymentPerBU';
 
 export default class CustomerProfile extends LightningElement {
     @wire(MessageContext) messageContext;
 
     subscription;
     @track record;
+    @track preferredPayments = [];
     @track isLoading = false;
     @track error;
 
@@ -23,13 +25,16 @@ export default class CustomerProfile extends LightningElement {
         if (!message || !message.recordId) {
             this.error = 'Invalid recordId received';
             this.record = undefined;
+            this.preferredPayments = [];
             return;
         }
 
         this.isLoading = true;
         this.error = undefined;
         this.record = undefined;
+        this.preferredPayments = [];
 
+        // --- Step 1: Get UnifiedIndividual details ---
         getUnifiedIndividualById({ ssotId: message.recordId })
             .then(result => {
                 if (result && Object.keys(result).length > 0) {
@@ -67,11 +72,26 @@ export default class CustomerProfile extends LightningElement {
                         engagement_score: engagement,
                         engagement_label: engagementLabel
                     };
+
+                    // --- Step 2: Get Preferred Payment per BU ---
+                    return getPreferredPaymentPerBU({ unifiedId: message.recordId });
                 } else {
-                    this.error = 'No record found for this ID.';
+                    throw new Error('No record found for this ID.');
+                }
+            })
+            .then(paymentData => {
+                if (paymentData && paymentData.length > 0) {
+                    this.preferredPayments = paymentData.map(item => ({
+                        bu: item.bu__c,
+                        paymentBank: item.payment_bank__c,
+                        paymentMethod: item.payment_method__c
+                    }));
+                } else {
+                    this.preferredPayments = [];
                 }
             })
             .catch(error => {
+                console.error('Error in handleRecordSelection:', error);
                 this.error = error?.body?.message || error.message;
             })
             .finally(() => {
@@ -90,12 +110,9 @@ export default class CustomerProfile extends LightningElement {
     get gaugeStyle() {
         const score = this.record?.engagement_score || 0;
         const radius = 40;
-        const circumference = Math.PI * radius; // panjang half-circle
+        const circumference = Math.PI * radius;
         const filled = (score / 100) * circumference;
         const empty = circumference - filled;
-
-        // offset = empty (so the filled part will be the first 'filled' length)
         return `stroke-dasharray: ${circumference}; stroke-dashoffset: ${empty}; transform-origin: 50% 50%;`;
     }
-
 }
