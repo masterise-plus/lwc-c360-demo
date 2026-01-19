@@ -94,7 +94,7 @@ export default class CategoryChart extends LightningElement {
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: {
-                    duration: 1500,
+                    duration: 1000,
                     easing: 'easeOutQuart'
                 },
                 plugins: {

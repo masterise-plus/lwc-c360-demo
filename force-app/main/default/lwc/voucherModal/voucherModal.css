@@ -1,0 +1,277 @@
+/* Modal Customization */
+.modal-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+    border-bottom: none;
+    padding: 16px 24px;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.close-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.modal-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e8e8e8;
+    padding: 12px 24px;
+}
+
+/* Voucher List */
+.voucher-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Voucher Card */
+.voucher-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8e8e8;
+}
+
+/* Banner Section */
+.voucher-banner {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 60%, #3d6a97 100%);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.voucher-banner::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+.banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1;
+}
+
+.brand-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.service-badge {
+    display: inline-block;
+    background-color: #f5f5dc;
+    color: #1e3a5f;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.discount-badge {
+    display: inline-block;
+    background-color: #1e3a5f;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    border: 2px solid #ffffff;
+    width: fit-content;
+}
+
+.voucher-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-style: italic;
+}
+
+.banner-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.voucher-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+}
+
+/* Info Section */
+.voucher-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #ffffff;
+}
+
+.voucher-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.voucher-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.expiration-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.clock-icon {
+    --slds-c-icon-color-foreground-default: #6b7280;
+}
+
+.clock-icon-hidden {
+    visibility: hidden;
+}
+
+.expiration-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.expiration-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+}
+
+/* Buttons */
+.voucher-action {
+    flex-shrink: 0;
+}
+
+.apply-button {
+    background-color: #1e3a5f;
+    color: #ffffff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.apply-button:hover {
+    background-color: #2d5a87;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+}
+
+.apply-button:active {
+    transform: translateY(0);
+}
+
+.close-button {
+    background-color: #ffffff;
+    color: #1e3a5f;
+    border: 2px solid #1e3a5f;
+    padding: 10px 32px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #1e3a5f;
+    color: #ffffff;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-icon {
+    --slds-c-icon-color-foreground-default: #6b7280;
+    margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .voucher-banner {
+        flex-direction: column;
+        padding: 14px 16px;
+        min-height: auto;
+    }
+
+    .banner-image {
+        position: relative;
+        width: 100%;
+        height: 80px;
+        margin-top: 12px;
+    }
+
+    .voucher-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .voucher-action {
+        width: 100%;
+    }
+
+    .apply-button {
+        width: 100%;
+    }
+}

@@ -4,9 +4,9 @@
             <div class="profile-container">
                 <!-- Header -->
                 <div class="profile-header">
-                    <div class="profile-photo">
+                    <div class="profile-photo profile-photo--lg">
                         <template if:true={record.ssot__PhotoURL__c}>
-                            <img src="https://high-plum-wey2dxbnkm.edgeone.app/3a7d4410-ffeb-4e21-bfab-6b485b10ebcb.png"
+                            <img src={record.ssot__PhotoURL__c}
                                 alt="Profile Photo"
                                 class="profile-img"
                                 onerror={handleImageError} />
@@ -42,7 +42,51 @@
                         <span class="label">Phone Number</span>
                         <span class="value">{record.phone_number}</span>
                     </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Member Tier</span>
+                        <span class="value">{record.Tier__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Member Age</span>
+                        <span class="value">{record.formatAge}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Point</span>
+                        <span class="value">{record.ssot__PointsBalanceNumber__c}</span>
+                    </div>
+
+                    
                 </div>
+
+                <template if:true={showHardcodedBadges}>
+                    <div class="bu-list-container">
+                        <span class="bu-badge">Eraspace</span>
+                        <span class="bu-badge">Erafone</span>
+                        <span class="bu-badge">iBox</span>
+                        <span class="bu-badge">XPENG</span>
+                        <span class="bu-badge">JDSports</span>
+                        <span class="bu-badge">Under Armour</span>
+                        <span class="bu-badge">Grand Lucky</span>
+                        <span class="bu-badge">Paris Baguette</span>
+                    </div>
+                </template>
+
+                <template if:true={showHardcodedBadgesBudi}>
+                    <div class="bu-list-container">
+                        <span class="bu-badge">Eraspace</span>
+                        <span class="bu-badge">Erafone</span>
+                        <span class="bu-badge">iBox</span>
+                        <span class="bu-badge">JDSports</span>
+                        <span class="bu-badge">Wilson</span>
+                        <span class="bu-badge">Paris Baguette</span>
+                    </div>
+                </template>
 
                 <hr class="divider" />
 
@@ -54,16 +98,103 @@
                         </span>
                         <span class="label">Segment</span>
                     </div>
+                    <lightning-tabset active-tab-value={activeTab}>
+                        <lightning-tab label="Er" value="Er" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
 
-                    <div class="segment-list">
-                        <template for:each={record.Segment_Display_Names} for:item="segmentName">
-                            <div key={segmentName} class="segment-badge">{segmentName}</div>
-                        </template>
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
 
-                        <template if:false={record.Segment_Display_Names.length}>
-                            <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
-                        </template>
-                    </div>
+                        <lightning-tab label="Ef" value="Ef" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="JD" value="JD" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="iB" value="iB" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="PB" value="PB" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="UA" value="UA" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="AS" value="AS" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="Others" value="Others" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+                    </lightning-tabset>
                 </div>
 
                 <hr class="divider" />
@@ -76,6 +207,8 @@
                     <span class="label">Lifetime Value</span>
                     <span class="value">Rp {record.LTV}</span>
                 </div>
+
+                <hr class="divider" />
 
                 <div class="preferred-list">
                     <div class="preferred-list-header">
@@ -116,12 +249,10 @@
                     </div>
                 </div>
 
-
-
                 <hr class="divider" />
 
                 <!-- Engagement Score Section -->
-                <div class="engagement-container">
+                <!-- <div class="engagement-container">
                     <div class="engagement-header">
                         <span class="icon-frame">
                             <lightning-icon class="white-icon" icon-name="utility:adduser" size="x-small"></lightning-icon>
@@ -131,18 +262,18 @@
 
 
                     <div class="gauge-wrapper">
-                        <svg viewBox="0 0 100 50" class="gauge">
+                        <svg viewBox="0 0 100 50" class="gauge"> -->
                             <!-- background arc -->
-                            <path
+                            <!-- <path
                                 d="M10,45 A40,40 0 0,1 90,45"
                                 stroke="#e0e0e0"
                                 stroke-width="8"
                                 fill="none"
                                 stroke-linecap="round">
-                            </path>
+                            </path> -->
 
                             <!-- dynamic arc -->
-                            <path
+                            <!-- <path
                                 d="M10,45 A40,40 0 0,1 90,45"
                                 stroke={gaugeColor}
                                 stroke-width="8"
@@ -160,7 +291,7 @@
                     </div>
                 </div>
 
-                <hr class="divider" />
+                <hr class="divider" /> -->
 
                 <!-- Profile Data -->
                 <div class="profile-data-section">

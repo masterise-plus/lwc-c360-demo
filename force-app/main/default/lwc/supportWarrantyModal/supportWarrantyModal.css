@@ -1,0 +1,199 @@
+/* Modal Customization */
+.modal-header {
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    border-bottom: none;
+    padding: 16px 24px;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.close-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.modal-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e8e8e8;
+    padding: 12px 24px;
+}
+
+/* Warranty List */
+.warranty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Warranty Card */
+.warranty-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.warranty-card-highlighted {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #fcd34d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Device Name */
+.device-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+/* Care Info */
+.care-info {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.care-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.care-value {
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+/* Status Row */
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.status-badge-active {
+    display: inline-block;
+    background-color: #10b981;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge-expired {
+    display: inline-block;
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge-pending {
+    display: inline-block;
+    background-color: #f59e0b;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Date Row */
+.date-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.date-label {
+    font-size: 13px;
+    color: #1e3a5f;
+    font-weight: 600;
+    min-width: 32px;
+}
+
+.clock-icon {
+    --slds-c-icon-color-foreground-default: #6b7280;
+}
+
+.date-value {
+    font-size: 13px;
+    color: #374151;
+}
+
+/* Buttons */
+.close-button {
+    background-color: #ffffff;
+    color: #0d9488;
+    border: 2px solid #0d9488;
+    padding: 10px 32px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #0d9488;
+    color: #ffffff;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-icon {
+    --slds-c-icon-color-foreground-default: #6b7280;
+    margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 16px;
+    }
+
+    .warranty-card,
+    .warranty-card-highlighted {
+        padding: 14px 16px;
+    }
+}

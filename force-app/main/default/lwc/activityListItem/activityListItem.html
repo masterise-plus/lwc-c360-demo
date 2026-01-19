@@ -1,57 +1,51 @@
 <template>
     <lightning-card title="Customer Product List" icon-name="standard:products">
-        <!-- Tombol header -->
+
+        <!-- Header Action -->
         <div slot="actions" class="slds-m-around_small">
             <lightning-button
                 label="Select Fields"
                 icon-name="utility:settings"
                 onclick={openFieldSelector}
-                variant="neutral"
-                class="header-select-button">
+                variant="neutral">
             </lightning-button>
         </div>
 
-        <!-- Loading Spinner -->
+        <!-- Loading -->
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading products..."></lightning-spinner>
         </template>
 
         <!-- Error -->
         <template if:true={error}>
-            <div class="slds-text-color_error slds-p-around_small">{error}</div>
+            <div class="slds-text-color_error slds-p-around_small">
+                {error}
+            </div>
         </template>
 
-        <!-- Data Table -->
+        <!-- Datatable (Preview) -->
         <template if:true={salesorderitem}>
-            <div class="datatable-wrapper">
-                <lightning-datatable
-                    key-field="Sales_Order_Id"
-                    show-row-number-column
-                    hide-checkbox-column
-                    data={visibleSalesOrderItem}
-                    columns={displayColumns}
-                    default-sort-direction={defaultSortDirection}
-                    sorted-direction={sortDirection}
-                    sorted-by={sortedBy}
-                    onsort={onHandleSort}>
-                </lightning-datatable>
-            </div>
+        <div class="slds-p-horizontal_medium">
+            <lightning-datatable class="table_luar"
+                key-field="Sales_Order_Id"
+                show-row-number-column
+                hide-checkbox-column
+                data={visibleSalesOrderItem}
+                columns={displayColumns}
+                sorted-direction={sortDirection}
+                sorted-by={sortedBy}
+                onsort={onHandleSort}>
+            </lightning-datatable>
+        </div>
             
 
-            <!-- Pagination Buttons -->
+            <!-- Show All Button -->
             <div class="slds-m-top_small slds-align_absolute-center">
                 <template if:true={canShowMore}>
                     <lightning-button
                         label="Show More"
                         variant="neutral"
-                        onclick={handleShowMore}>
-                    </lightning-button>
-                </template>
-                <template if:true={canShowLess}>
-                    <lightning-button
-                        label="Show Less"
-                        variant="neutral"
-                        onclick={handleShowLess}>
+                        onclick={openAllDataModal}>
                     </lightning-button>
                 </template>
             </div>
@@ -64,22 +58,24 @@
             </p>
         </template>
 
+        <!-- ===================== -->
         <!-- Field Selector Modal -->
+        <!-- ===================== -->
         <template if:true={isFieldModalOpen}>
-            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <section role="dialog" class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
 
                     <header class="slds-modal__header">
-                        <h2 class="slds-text-heading_medium">Select Fields to Display</h2>
+                        <h2 class="slds-text-heading_medium">
+                            Select Fields to Display
+                        </h2>
                     </header>
 
                     <div class="slds-modal__content slds-p-around_medium">
                         <lightning-dual-listbox
-                            name="visibleFields"
                             label="Visible Fields"
                             source-label="Available Fields"
                             selected-label="Displayed Fields"
-                            field-level-help="Choose and reorder the columns you want to see in the table"
                             options={availableFields}
                             value={tempSelectedFields}
                             onchange={handleTempFieldSelection}>
@@ -87,12 +83,90 @@
                     </div>
 
                     <footer class="slds-modal__footer">
-                        <lightning-button variant="neutral" label="Cancel" onclick={closeFieldModal}></lightning-button>
-                        <lightning-button variant="brand" label="Save" class="slds-m-left_small" onclick={applyFieldSelection}></lightning-button>
+                        <lightning-button
+                            label="Cancel"
+                            onclick={closeFieldModal}>
+                        </lightning-button>
+                        <lightning-button
+                            label="Save"
+                            variant="brand"
+                            class="slds-m-left_small"
+                            onclick={applyFieldSelection}>
+                        </lightning-button>
                     </footer>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
         </template>
     </lightning-card>
+
+        <!-- ===================== -->
+        <!-- Show All Data Modal -->
+        <!-- ===================== -->
+        <template if:true={isAllDataModalOpen}>
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_large">
+
+                <div class="slds-modal__container modal-container-1000">
+                    <lightning-modal-header>
+                        <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; justify-content:center; font-size:x-large; font-weight:500">
+                            <lightning-icon 
+                                icon-name="standard:opportunity" 
+                                alternative-text="Opportunity" 
+                                size="medium" 
+                                class="slds-m-right_small">
+                            </lightning-icon>
+                            <h3>All Customer Product List</h3>                           
+                        </div>                        
+                    </lightning-modal-header>
+
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-datatable
+                            key-field="Sales_Order_Id"
+                            show-row-number-column
+                            hide-checkbox-column
+                            data={modalPagedData}
+                            columns={displayColumns}
+                            sorted-direction={sortDirection}
+                            sorted-by={sortedBy}
+                            onsort={onHandleSort}>
+                        </lightning-datatable>
+                    </div>
+
+                    <footer class="slds-modal__footer slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                        <!-- LEFT: Pagination -->
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <lightning-button
+                                label="Previous"
+                                onclick={handleModalPrev}
+                                disabled={canModalPrev}>
+                            </lightning-button>
+
+                            <span class="slds-m-horizontal_medium">
+                                Page {modalCurrentPage} of {modalTotalPages}
+                            </span>
+
+                            <lightning-button
+                                label="Next"
+                                onclick={handleModalNext}
+                                disabled={canModalNext}>
+                            </lightning-button>
+                        </div>
+
+                        <!-- RIGHT: Close -->
+                        <div>
+                            <lightning-button
+                                label="Close"
+                                variant="neutral"
+                                onclick={closeAllDataModal}>
+                            </lightning-button>
+                        </div>
+
+                    </footer>
+
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
 </template>

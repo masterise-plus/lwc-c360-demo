@@ -1,0 +1,68 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading" class="slds-modal slds-fade-in-open slds-modal_medium">
+        <div class="slds-modal__container">
+            <!-- Modal Header -->
+            <header class="slds-modal__header modal-header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" size="small" class="close-icon"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading" class="slds-modal__title modal-title">
+                    <lightning-icon icon-name="standard:service_contract" size="small" class="header-icon"></lightning-icon>
+                    <span>All Service and Warranty</span>
+                </h2>
+            </header>
+
+            <!-- Modal Body -->
+            <div class="slds-modal__content modal-content" id="modal-content">
+                <div class="warranty-list">
+                    <template for:each={formattedWarranties} for:item="warranty" for:index="index">
+                        <div key={warranty.id} class={warranty.cardClass}>
+                            <!-- Device Name -->
+                            <div class="device-name">{warranty.deviceName}</div>
+                            
+                            <!-- Apple Care ID -->
+                            <div class="care-info">
+                                <span class="care-label">Apple Care:</span>
+                                <span class="care-value">{warranty.appleCareId}</span>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="status-row">
+                                <span class="status-label">Status:</span>
+                                <span class={warranty.statusClass}>{warranty.status}</span>
+                            </div>
+                            
+                            <!-- Buy Date -->
+                            <div class="date-row">
+                                <span class="date-label">Buy:</span>
+                                <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                                <span class="date-value">{warranty.buyDate}</span>
+                            </div>
+                            
+                            <!-- Expiration Date -->
+                            <div class="date-row">
+                                <span class="date-label">Exp:</span>
+                                <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                                <span class="date-value">{warranty.expirationDate}</span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:false={hasWarranties}>
+                        <div class="empty-state">
+                            <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                            <p>No warranty information available.</p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <footer class="slds-modal__footer modal-footer">
+                <button class="close-button" onclick={handleClose}>Close</button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" onclick={handleBackdropClick}></div>
+</template>

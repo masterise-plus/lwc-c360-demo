@@ -21,14 +21,33 @@
 
 .profile-photo {
     flex-shrink: 0;
+    --profile-photo-size: 64px;
+    width: var(--profile-photo-size);
+    height: var(--profile-photo-size);
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f6fb;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.profile-photo--lg {
+    --profile-photo-size: 96px;
 }
 
 .profile-img {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-img-icon {
+    --sds-c-icon-color-foreground-default: #1b3b6f;
+    transform: scale(1.4);
+    transform-origin: center;
 }
 
 
@@ -41,7 +60,7 @@
 
 .profile-header {
     text-align: left;
-    gap: 0.5rem;
+    gap: 1rem;
     display:flex;
     align-items: center;
     padding-bottom: 1.5rem;
@@ -113,7 +132,6 @@
     flex-wrap: wrap;
     gap: 0.6rem;
     margin-top: 0.2rem;
-    margin-left: calc(1.8rem + 0.4rem);
 }
 
 
@@ -344,4 +362,26 @@
 @media (max-width: 420px) {
   .icon-frame { width: 32px; height: 32px; padding: 5px; }
   .icon-frame--small { width: 26px; height: 26px; padding: 3px; }
+}
+
+
+/* Badge Styling */
+.bu-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* Indent to align with the text, bypassing the icon width (1.8rem) + gap (0.4rem) */
+    margin-left: calc(1.8rem + 0.4rem); 
+    margin-top: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.bu-badge {
+    background-color: #e8f4ff;
+    color: #032d60;
+    border: 1px solid #b6d8ff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 600;
 }

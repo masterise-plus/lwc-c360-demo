@@ -60,17 +60,17 @@ export default class EngagementScoring extends LightningElement {
 
         this.channels = [
             {
-                label: 'Email Subscribe',
+                label: 'Whatsapp Subscribe',
                 value: sub?.toFixed(2),
                 style: `width:${toPercent(sub)}; background-color:#2ecc71;`
             },
+            // {
+            //     label: 'Email Engagement',
+            //     value: eng?.toFixed(2),
+            //     style: `width:${toPercent(eng)}; background-color:#f1c40f;`
+            // },
             {
-                label: 'Email Engagement',
-                value: eng?.toFixed(2),
-                style: `width:${toPercent(eng)}; background-color:#f1c40f;`
-            },
-            {
-                label: 'Email Open',
+                label: 'Whatsapp Read',
                 value: open?.toFixed(2),
                 style: `width:${toPercent(open)}; background-color:#e74c3c;`
             }

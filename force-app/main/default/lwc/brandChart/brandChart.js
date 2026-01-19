@@ -88,7 +88,7 @@ export default class BrandChart extends LightningElement {
                 responsive: true,
                 maintainAspectRatio: false, // biar fleksibel mengikuti tinggi container
                 animation: {
-                    duration: 1500,
+                    duration: 1000,
                     easing: 'easeOutQuart'
                 },
                 plugins: {

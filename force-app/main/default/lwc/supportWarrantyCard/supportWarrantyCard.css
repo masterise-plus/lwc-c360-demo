@@ -1,0 +1,230 @@
+/* Container */
+.warranty-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.warranty-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.header-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0;
+    flex: 1;
+}
+
+.header-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-initial {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Warranty List */
+.warranty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Warranty Card */
+.warranty-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.warranty-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 10px 25px -5px rgba(30, 58, 95, 0.15),
+        0 8px 10px -6px rgba(30, 58, 95, 0.1),
+        0 0 0 1px rgba(30, 58, 95, 0.05);
+    border-color: rgba(30, 58, 95, 0.2);
+}
+
+.warranty-card-highlighted {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #fcd34d;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.warranty-card-highlighted:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 10px 25px -5px rgba(251, 191, 36, 0.35),
+        0 8px 10px -6px rgba(251, 191, 36, 0.2),
+        0 0 20px rgba(251, 191, 36, 0.15);
+    border-color: rgba(251, 191, 36, 0.6);
+}
+
+/* Device Name */
+.device-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+/* Care Info */
+.care-info {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.care-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.care-value {
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+/* Status Row */
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.status-badge-active {
+    display: inline-block;
+    background-color: #10b981;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge-expired {
+    display: inline-block;
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge-pending {
+    display: inline-block;
+    background-color: #f59e0b;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Date Row */
+.date-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.date-label {
+    font-size: 13px;
+    color: #1e3a5f;
+    font-weight: 600;
+    min-width: 32px;
+}
+
+.clock-icon {
+    --slds-c-icon-color-foreground-default: #6b7280;
+}
+
+.date-value {
+    font-size: 13px;
+    color: #374151;
+}
+
+/* Show More Button */
+.show-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.show-more-button {
+    background-color: #ffffff;
+    color: #1e3a5f;
+    border: 2px solid #1e3a5f;
+    padding: 10px 32px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.show-more-button:hover {
+    background-color: #1e3a5f;
+    color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .warranty-container {
+        padding: 16px;
+    }
+
+    .warranty-card,
+    .warranty-card-highlighted {
+        padding: 14px 16px;
+    }
+
+    .header-title {
+        font-size: 16px;
+    }
+}

@@ -3,7 +3,7 @@
     margin-left: 1rem;
     padding-left: 2rem;
     padding-right: 2rem;
-    padding-top: 1.5rem
+    padding-top: 1.5rem;
     /* border-left: 2px solid #dcdcdc; */
 }
 
@@ -71,4 +71,22 @@ padding-left:20px;
 .time {
     font-size: 0.75rem;
     color: #6b7280;
+}
+
+.spinner-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+/* optional: modal container rapi */
+.slds-modal__container {
+  max-width: 48rem;
+  width: 90%;
 }

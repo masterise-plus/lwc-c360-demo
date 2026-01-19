@@ -1,0 +1,62 @@
+<template>
+    <div class="warranty-container">
+        <!-- Header -->
+        <div class="warranty-header">
+            <div class="header-icon">
+                <lightning-icon icon-name="standard:service_contract" size="small"></lightning-icon>
+            </div>
+            <h2 class="header-title">On-Going Service and Warranty</h2>
+        </div>
+
+        <!-- Warranty List -->
+        <div class="warranty-list">
+            <template for:each={displayedWarranties} for:item="warranty" for:index="index">
+                <div key={warranty.id} class={warranty.cardClass}>
+                    <!-- Device Name -->
+                    <div class="device-name">{warranty.deviceName}</div>
+                    
+                    <!-- Apple Care ID -->
+                    <div class="care-info">
+                        <span class="care-label">Apple Care:</span>
+                        <span class="care-value">{warranty.appleCareId}</span>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="status-row">
+                        <span class="status-label">Status:</span>
+                        <span class={warranty.statusClass}>{warranty.status}</span>
+                    </div>
+                    
+                    <!-- Buy Date -->
+                    <div class="date-row">
+                        <span class="date-label">Buy:</span>
+                        <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                        <span class="date-value">{warranty.buyDate}</span>
+                    </div>
+                    
+                    <!-- Expiration Date -->
+                    <div class="date-row">
+                        <span class="date-label">Exp:</span>
+                        <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                        <span class="date-value">{warranty.expirationDate}</span>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Show More Button -->
+        <template if:true={hasMoreWarranties}>
+            <div class="show-more-container">
+                <button class="show-more-button" onclick={handleShowMore}>Show More</button>
+            </div>
+        </template>
+
+        <!-- Modal -->
+        <template if:true={isModalOpen}>
+            <c-support-warranty-modal 
+                warranties={allWarranties} 
+                onclose={handleCloseModal}>
+            </c-support-warranty-modal>
+        </template>
+    </div>
+</template>
