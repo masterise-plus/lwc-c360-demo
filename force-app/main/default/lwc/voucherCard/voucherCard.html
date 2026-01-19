@@ -9,9 +9,10 @@
         </div>
 
         <!-- Voucher List -->
-        <div class="voucher-list">
-            <template for:each={displayedVouchers} for:item="voucher">
-                <div key={voucher.id} class="voucher-card">
+        <template if:true={hasVouchers}>
+            <div class="voucher-list">
+                <template for:each={displayedVouchers} for:item="voucher">
+                    <div key={voucher.id} class="voucher-card">
                     <!-- Banner Section -->
                     <div class="voucher-banner">
                         <div class="banner-content">
@@ -50,7 +51,16 @@
                     </div>
                 </div>
             </template>
-        </div>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template if:false={hasVouchers}>
+            <div class="empty-state">
+                <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                <p>No voucher information available.</p>
+            </div>
+        </template>
 
         <!-- Show More Button -->
         <template if:true={hasMoreVouchers}>

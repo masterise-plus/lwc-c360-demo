@@ -9,40 +9,50 @@
         </div>
 
         <!-- Warranty List -->
-        <div class="warranty-list">
-            <template for:each={displayedWarranties} for:item="warranty" for:index="index">
-                <div key={warranty.id} class={warranty.cardClass}>
-                    <!-- Device Name -->
-                    <div class="device-name">{warranty.deviceName}</div>
-                    
-                    <!-- Apple Care ID -->
-                    <div class="care-info">
-                        <span class="care-label">Apple Care:</span>
-                        <span class="care-value">{warranty.appleCareId}</span>
+        <template if:true={hasWarranties}>
+            <div class="warranty-list">
+                <template for:each={displayedWarranties} for:item="warranty" for:index="index">
+                    <div key={warranty.id} class={warranty.cardClass}>
+                        <!-- Device Name -->
+                        <div class="device-name">{warranty.deviceName}</div>
+                        
+                        <!-- Apple Care ID -->
+                        <div class="care-info">
+                            <span class="care-label">Apple Care:</span>
+                            <span class="care-value">{warranty.appleCareId}</span>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div class="status-row">
+                            <span class="status-label">Status:</span>
+                            <span class={warranty.statusClass}>{warranty.status}</span>
+                        </div>
+                        
+                        <!-- Buy Date -->
+                        <div class="date-row">
+                            <span class="date-label">Buy:</span>
+                            <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                            <span class="date-value">{warranty.buyDate}</span>
+                        </div>
+                        
+                        <!-- Expiration Date -->
+                        <div class="date-row">
+                            <span class="date-label">Exp:</span>
+                            <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
+                            <span class="date-value">{warranty.expirationDate}</span>
+                        </div>
                     </div>
-                    
-                    <!-- Status -->
-                    <div class="status-row">
-                        <span class="status-label">Status:</span>
-                        <span class={warranty.statusClass}>{warranty.status}</span>
-                    </div>
-                    
-                    <!-- Buy Date -->
-                    <div class="date-row">
-                        <span class="date-label">Buy:</span>
-                        <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
-                        <span class="date-value">{warranty.buyDate}</span>
-                    </div>
-                    
-                    <!-- Expiration Date -->
-                    <div class="date-row">
-                        <span class="date-label">Exp:</span>
-                        <lightning-icon icon-name="utility:clock" size="xx-small" class="clock-icon"></lightning-icon>
-                        <span class="date-value">{warranty.expirationDate}</span>
-                    </div>
-                </div>
-            </template>
-        </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template if:false={hasWarranties}>
+            <div class="empty-state">
+                <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                <p>No warranty information available.</p>
+            </div>
+        </template>
 
         <!-- Show More Button -->
         <template if:true={hasMoreWarranties}>

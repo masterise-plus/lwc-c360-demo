@@ -1,11 +1,23 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
+import { subscribe, MessageContext } from 'lightning/messageService';
+import RECORD_SELECTED_CHANNEL from '@salesforce/messageChannel/UnifiedIndividualSelected__c';
 
 export default class VoucherCard extends LightningElement {
+    @wire(MessageContext) messageContext;
+    subscription;
+
+    currentRecordId;
     @track isModalOpen = false;
     @track displayLimit = 3;
 
+    // Allowed customer IDs that can view voucher data
+    allowedCustomerIds = [
+        'd66c88cebc91c48f0f164341265e3579',
+        'cf72c1c1c94bd7c10cf2477cf1c0c70b'
+    ];
+
     // Sample voucher data - replace with actual data source
-    @track allVouchers = [
+    @track voucherData = [
         {
             id: '1',
             brand: 'KLIK N CLEAN',
@@ -63,12 +75,40 @@ export default class VoucherCard extends LightningElement {
         }
     ];
 
+    // Check if customer ID is in the allowed list
+    get isCustomerIdAllowed() {
+        return this.currentRecordId && this.allowedCustomerIds.includes(this.currentRecordId);
+    }
+
+    // Get vouchers - returns empty array if customer is not allowed
+    get allVouchers() {
+        return this.isCustomerIdAllowed ? this.voucherData : [];
+    }
+
     get displayedVouchers() {
         return this.allVouchers.slice(0, this.displayLimit);
     }
 
+    get hasVouchers() {
+        return this.allVouchers.length > 0;
+    }
+
     get hasMoreVouchers() {
         return this.allVouchers.length > this.displayLimit;
+    }
+
+    connectedCallback() {
+        this.subscription = subscribe(
+            this.messageContext,
+            RECORD_SELECTED_CHANNEL,
+            (message) => this.handleRecordSelection(message)
+        );
+    }
+
+    handleRecordSelection(message) {
+        if (message && message.recordId) {
+            this.currentRecordId = message.recordId;
+        }
     }
 
     handleShowMore() {
