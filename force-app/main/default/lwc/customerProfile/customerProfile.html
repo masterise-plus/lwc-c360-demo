@@ -64,29 +64,48 @@
                     
                 </div>
 
-                <template if:true={showHardcodedBadges}>
-                    <div class="bu-list-container">
-                        <span class="bu-badge">Eraspace</span>
-                        <span class="bu-badge">Erafone</span>
-                        <span class="bu-badge">iBox</span>
-                        <span class="bu-badge">XPENG</span>
-                        <span class="bu-badge">JDSports</span>
-                        <span class="bu-badge">Under Armour</span>
-                        <span class="bu-badge">Grand Lucky</span>
-                        <span class="bu-badge">Paris Baguette</span>
-                    </div>
-                </template>
+                <hr class="divider" />
 
-                <template if:true={showHardcodedBadgesBudi}>
-                    <div class="bu-list-container">
-                        <span class="bu-badge">Eraspace</span>
-                        <span class="bu-badge">Erafone</span>
-                        <span class="bu-badge">iBox</span>
-                        <span class="bu-badge">JDSports</span>
-                        <span class="bu-badge">Wilson</span>
-                        <span class="bu-badge">Paris Baguette</span>
+                <div>
+                    <div class="segment-section">
+                        <div class="segment-header">
+                            <span class="icon-frame">
+                                <lightning-icon class="white-icon" icon-name="utility:buyer_group_qualifier" size="x-small"></lightning-icon>
+                            </span>
+                            <span class="label">Member Of</span>
+                        </div>
+                        <template if:true={showHardcodedBadges}>
+                            <div class="bu-list-container">
+                                <span class="logo-current-bu"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                            </div>
+                            <hr class="divider" />
+                            <div class="bu-list-container">
+                                <span class="logo"><img src="https://demo04-logo-erafone.edgeone.app/erafone.png" alt="Erafone" /></span>
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-grand-lucky.edgeone.app/grandlucky.png" alt="Grand Lucky" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-under-armour.edgeone.app/under%20armour.png" alt="Under Armour" /></span>
+                                <span class="logo"><img src="https://demo04-logo-xpeng.edgeone.app/xpeng.png" alt="XPENG" /></span>                                
+                            </div>
+                        </template>
+
+                        <template if:true={showHardcodedBadgesBudi}>
+                           <div class="bu-list-container">
+                                <span class="logo-current-bu"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                            </div>
+                            <hr class="divider" />
+                            <div class="bu-list-container">
+                                <span class="logo"><img src="https://demo04-logo-erafone.edgeone.app/erafone.png" alt="Erafone" /></span>
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-wilson.edgeone.app/Wilson.png" alt="Wilson" /></span>
+                            </div>
+                        </template>
                     </div>
-                </template>
+                </div>
+                
 
                 <hr class="divider" />
 
@@ -224,17 +243,19 @@
                                     <table class="payment-table">
                                         <thead>
                                             <tr>
-                                                <th>Business Unit</th>
-                                                <th>Preferred Bank</th>
-                                                <th>Preferred Method</th>
+                                                <!-- <th>BU</th> -->
+                                                <th>Bank</th>
+                                                <th>Payment Method</th>
+                                                <th>Payment Scheme</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <template for:each={preferredPayments} for:item="item">
                                                 <tr key={item.bu}>
-                                                    <td>{item.bu}</td>
+                                                    <!-- <td>{item.bu}</td> -->
                                                     <td>{item.paymentBank}</td>
                                                     <td>{item.paymentMethod}</td>
+                                                    <td>{item.paymentScheme }</td>
                                                 </tr>
                                             </template>
                                         </tbody>

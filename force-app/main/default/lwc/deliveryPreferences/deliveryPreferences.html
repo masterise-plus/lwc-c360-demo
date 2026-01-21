@@ -1,0 +1,58 @@
+<template>
+    <div class="delivery-container">
+        <!-- Header -->
+        <div class="delivery-header">
+            <div class="header-icon">
+                <lightning-icon icon-name="utility:truck" size="small"></lightning-icon>
+            </div>
+            <h2 class="header-title">Delivery Preferences</h2>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <!-- Total Pickup Orders -->
+            <div class="metric-card">
+                <div class="metric-label">Total Pickup Orders</div>
+                <div class="metric-value-row">
+                    <div class="metric-icon pickup-icon">
+                        <lightning-icon icon-name="utility:bundle_config" size="small"></lightning-icon>
+                    </div>
+                    <span class="metric-value">{totalPickupOrders}</span>
+                </div>
+            </div>
+
+            <!-- Total Home Deliveries -->
+            <div class="metric-card">
+                <div class="metric-label">Total Home Deliveries</div>
+                <div class="metric-value-row">
+                    <div class="metric-icon delivery-icon">
+                        <lightning-icon icon-name="utility:package" size="small"></lightning-icon>
+                    </div>
+                    <span class="metric-value">{totalHomeDeliveries}</span>
+                </div>
+            </div>
+
+            <!-- Avg. Delivery Time -->
+            <div class="metric-card">
+                <div class="metric-label">Avg. Delivery Time (min)</div>
+                <div class="metric-value-row">
+                    <div class="metric-icon time-icon">
+                        <lightning-icon icon-name="utility:clock" size="small"></lightning-icon>
+                    </div>
+                    <span class="metric-value">{avgDeliveryTime}</span>
+                </div>
+            </div>
+
+            <!-- Order Satisfaction -->
+            <div class="metric-card">
+                <div class="metric-label">Order Satisfaction (%)</div>
+                <div class="metric-value-row">
+                    <div class="metric-icon satisfaction-icon">
+                        <lightning-icon icon-name="utility:smiley_and_people" size="small"></lightning-icon>
+                    </div>
+                    <span class="metric-value">{orderSatisfaction}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -2,7 +2,7 @@
     <lightning-card title="Search Customer" icon-name="standard:search">
         <div class="search-card-container">
 
-            <!-- Semua field dalam 1 baris -->
+            <!-- Search bar dengan semua field dalam 1 baris -->
             <div class="search-bar">
 
                 <!-- Search Field dropdown -->
@@ -27,14 +27,19 @@
                     <!-- Dropdown suggestion -->
                     <template if:true={showSuggestions}>
                         <div class="suggestion-box slds-box slds-m-top_xx-small">
-                            <template for:each={suggestions} for:item="s">
-                                <div
-                                    key={s.value}
-                                    class="suggestion-item"
-                                    data-value={s.value}
-                                    onclick={handleSuggestionClick}>
-                                    {s.label}
-                                </div>
+                            <template if:true={suggestions.length}>
+                                <template for:each={suggestions} for:item="s">
+                                    <div
+                                        key={s.value}
+                                        class="suggestion-item"
+                                        data-value={s.value}
+                                        onclick={handleSuggestionClick}>
+                                        {s.label}
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={suggestions.length}>
+                                <div class="suggestion-item disabled">No suggestions found</div>
                             </template>
                         </div>
                     </template>
@@ -54,29 +59,32 @@
 
             </div>
 
+            <!-- Logo di sisi kanan -->
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" />
+                </div>
+            </div>
+
             <!-- Spinner -->
             <template if:true={isLoading}>
-                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                <div class="spinner-overlay">
+                    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                </div>
             </template>
-
-            <!-- Datatable -->
-            <!-- <template if:true={records}>
-                <lightning-datatable
-                    class="slds-m-top_medium"
-                    key-field="ssot__Id__c"
-                    data={records}
-                    columns={columns}>
-                </lightning-datatable>
-            </template> -->
 
             <!-- No Results -->
             <template if:true={noResults}>
-                <p class="slds-text-body_small slds-m-top_medium">No records found.</p>
+                <p class="slds-text-body_small slds-m-top_medium slds-text-align_center">
+                    No records found.
+                </p>
             </template>
 
             <!-- Error -->
             <template if:true={error}>
-                <p class="slds-text-color_error slds-m-top_medium">{error}</p>
+                <div class="error slds-m-top_medium">
+                    ⚠️ {error}
+                </div>
             </template>
         </div>
     </lightning-card>

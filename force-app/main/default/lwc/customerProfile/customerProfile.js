@@ -101,10 +101,13 @@ export default class CustomerProfile extends LightningElement {
             })
             .then(paymentData => {
                 if (paymentData && paymentData.length > 0) {
-                    this.preferredPayments = paymentData.map(item => ({
+                    const filteredData = paymentData.filter(item => item.bu__c === 'Ibox');
+                    
+                    this.preferredPayments = filteredData.map(item => ({
                         bu: item.bu__c,
                         paymentBank: item.payment_bank__c,
-                        paymentMethod: item.payment_method__c
+                        paymentMethod: item.payment_method__c,
+                        paymentScheme: item.payment_scheme__c 
                     }));
                 } else {
                     this.preferredPayments = [];

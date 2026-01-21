@@ -1,0 +1,51 @@
+<template>
+    <div class="engagement-container">
+        <!-- Header -->
+        <div class="engagement-header">
+            <div class="header-icon">
+                <lightning-icon icon-name="standard:dashboard" size="small"></lightning-icon>
+            </div>
+            <h2 class="header-title">Engagement</h2>
+        </div>
+
+        <!-- Engagement Metrics -->
+        <template if:true={hasEngagementData}>
+            <div class="metrics-grid">
+                <!-- Average Duration -->
+                <div class="metric-item">
+                    <div class="metric-label">Average duration, sec</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:clock" size="x-small" class="metric-icon clock-icon"></lightning-icon>
+                        <span class="metric-number">{averageDuration}</span>
+                    </div>
+                </div>
+
+                <!-- Last Site Visit -->
+                <div class="metric-item">
+                    <div class="metric-label">Last site visit</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:event" size="x-small" class="metric-icon calendar-icon"></lightning-icon>
+                        <span class="metric-number">{lastSiteVisit}</span>
+                    </div>
+                </div>
+
+                <!-- Duration of Last Visit -->
+                <div class="metric-item metric-full-width">
+                    <div class="metric-label">Duration of last visit, sec</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:clock" size="x-small" class="metric-icon clock-icon"></lightning-icon>
+                        <span class="metric-number">{lastVisitDuration}</span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template if:false={hasEngagementData}>
+            <div class="empty-state">
+                <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                <p>No engagement data available.</p>
+            </div>
+        </template>
+    </div>
+</template>
