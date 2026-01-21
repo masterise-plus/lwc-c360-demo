@@ -50,6 +50,26 @@
     border: 1px solid #e8e8e8;
 }
 
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-state p {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.empty-icon {
+    --slds-c-icon-color-foreground-default: #9ca3af;
+}
+
 /* Banner Section */
 .voucher-banner {
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 60%, #3d6a97 100%);

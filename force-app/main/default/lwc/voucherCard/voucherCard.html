@@ -1,13 +1,5 @@
 <template>
-    <div class="voucher-container">
-        <!-- Header -->
-        <div class="voucher-header">
-            <div class="header-icon">
-                <lightning-icon icon-name="standard:opportunity" size="small"></lightning-icon>
-            </div>
-            <h2 class="header-title">Voucher & Benefits</h2>
-        </div>
-
+    <lightning-card title="Voucher & Benefits" icon-name="standard:opportunity">
         <!-- Voucher List -->
         <template if:true={hasVouchers}>
             <div class="voucher-list">
@@ -77,5 +69,5 @@
                 onapply={handleModalApply}>
             </c-voucher-modal>
         </template>
-    </div>
+    </lightning-card>
 </template>
