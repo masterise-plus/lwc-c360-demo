@@ -1,18 +1,23 @@
 <template>
-    <div class="warranty-container">
-        <!-- Header -->
-        <div class="warranty-header">
-            <div class="header-icon">
-                <lightning-icon icon-name="standard:service_contract" size="small"></lightning-icon>
+    <lightning-card title="Support and Warranty" icon-name="standard:service_contract">
+        <div class="card-content">
+        <!-- Expiration Alert -->
+        <template if:true={hasExpiringWarranties}>
+            <div class="expiration-alert">
+                <lightning-icon icon-name="utility:warning" size="small" class="alert-icon"></lightning-icon>
+                <div class="alert-content">
+                    <div class="alert-title">{expirationAlertTitle}</div>
+                    <div class="alert-description">Offer customer to renew</div>
+                </div>
             </div>
-            <h2 class="header-title">On-Going Service and Warranty</h2>
-        </div>
+        </template>
 
         <!-- Warranty List -->
         <template if:true={hasWarranties}>
             <div class="warranty-list">
                 <template for:each={displayedWarranties} for:item="warranty" for:index="index">
                     <div key={warranty.id} class={warranty.cardClass}>
+                        
                         <!-- Device Name -->
                         <div class="device-name">{warranty.deviceName}</div>
                         
@@ -68,5 +73,6 @@
                 onclose={handleCloseModal}>
             </c-support-warranty-modal>
         </template>
-    </div>
+        </div>
+    </lightning-card>
 </template>

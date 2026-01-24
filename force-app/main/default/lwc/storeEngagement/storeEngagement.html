@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title="Website Engagement" icon-name="standard:dashboard">
+    <lightning-card title="Store Engagement" icon-name="standard:retail_store">
         <!-- Loading State -->
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading"></lightning-spinner>
@@ -17,12 +17,12 @@
                     </div>
                 </div>
 
-                <!-- Last Site Visit -->
+                <!-- Last Store Visit -->
                 <div class="metric-item">
-                    <div class="metric-label">Last site visit</div>
+                    <div class="metric-label">Last store visit</div>
                     <div class="metric-value">
                         <lightning-icon icon-name="utility:event" size="xx-small" class="metric-icon calendar-icon"></lightning-icon>
-                        <span class="metric-number">{lastSiteVisit}</span>
+                        <span class="metric-number">{lastStoreVisit}</span>
                     </div>
                 </div>
 

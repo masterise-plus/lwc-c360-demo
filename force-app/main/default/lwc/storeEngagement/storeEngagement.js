@@ -2,7 +2,7 @@ import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe, MessageContext } from 'lightning/messageService';
 import RECORD_SELECTED_CHANNEL from '@salesforce/messageChannel/UnifiedIndividualSelected__c';
 
-export default class WebsiteEngagementCard extends LightningElement {
+export default class StoreEngagement extends LightningElement {
     @wire(MessageContext) messageContext;
 
     subscription = null;
@@ -17,7 +17,7 @@ export default class WebsiteEngagementCard extends LightningElement {
     // Track engagement data
     @track engagementData = {
         averageDuration: '20 324',
-        lastSiteVisit: '07.12.2022',
+        lastStoreVisit: '07.12.2022',
         lastVisitDuration: '324'
     };
 
@@ -48,9 +48,9 @@ export default class WebsiteEngagementCard extends LightningElement {
         return this.engagementData?.averageDuration || '0';
     }
 
-    // Getter for last site visit date
-    get lastSiteVisit() {
-        return this.engagementData?.lastSiteVisit || '-';
+    // Getter for last store visit date
+    get lastStoreVisit() {
+        return this.engagementData?.lastStoreVisit || '-';
     }
 
     // Getter for duration of last visit
@@ -69,7 +69,7 @@ export default class WebsiteEngagementCard extends LightningElement {
         if (data) {
             this.engagementData = {
                 averageDuration: data.averageDuration || '0',
-                lastSiteVisit: data.lastSiteVisit || '-',
+                lastStoreVisit: data.lastStoreVisit || '-',
                 lastVisitDuration: data.lastVisitDuration || '0'
             };
         }

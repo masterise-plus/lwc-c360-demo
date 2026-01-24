@@ -1,0 +1,268 @@
+/* Container inside lightning-card */
+.carousel-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px 16px 16px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    overflow: hidden;
+}
+
+/* Carousel Wrapper */
+.carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.carousel-wrapper:active {
+    cursor: grabbing;
+}
+
+/* Carousel Track */
+.carousel-track {
+    display: flex;
+    width: 100%;
+    will-change: transform;
+}
+
+/* Carousel Slide */
+.carousel-slide {
+    flex: 0 0 70%;
+    width: 70%;
+    padding: 0 6px;
+    box-sizing: border-box;
+}
+
+/* Promo Card */
+.promo-card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    min-height: 160px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.promo-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Badge */
+.promo-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.badge-icon {
+    --slds-c-icon-color-foreground-default: #ffd700;
+    margin-right: 2px;
+}
+
+.badge-text {
+    white-space: nowrap;
+}
+
+/* Promo Content */
+.promo-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+    padding-right: 10px;
+    max-width: 60%;
+}
+
+.promo-logo {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.promo-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: #1a237e;
+    margin: 0 0 6px 0;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.promo-subtitle {
+    font-size: 11px;
+    color: #555;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.promo-price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 3px;
+    background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-weight: 700;
+    width: fit-content;
+    box-shadow: 0 2px 8px rgba(229, 57, 53, 0.3);
+}
+
+.price-currency {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.price-value {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+/* Promo Image */
+.promo-image {
+    flex: 0 0 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 8px 0;
+}
+
+.indicator {
+    width: 28px;
+    height: 5px;
+    border: none;
+    border-radius: 3px;
+    background-color: #d9d9d9;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 0;
+}
+
+.indicator:hover {
+    background-color: #bdbdbd;
+}
+
+.indicator:focus {
+    outline: none;
+}
+
+.indicator.active {
+    width: 36px;
+    background-color: #424242;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .carousel-slide {
+        flex: 0 0 85%;
+        width: 85%;
+    }
+    
+    .promo-card {
+        min-height: 140px;
+        padding: 14px 16px;
+    }
+    
+    .promo-title {
+        font-size: 16px;
+    }
+    
+    .promo-image {
+        flex: 0 0 30%;
+    }
+    
+    .promo-content {
+        max-width: 65%;
+    }
+}
+
+@media (max-width: 400px) {
+    .carousel-slide {
+        flex: 0 0 90%;
+        width: 90%;
+    }
+    
+    .promo-card {
+        flex-direction: column;
+        min-height: 200px;
+    }
+    
+    .promo-content {
+        text-align: center;
+        padding-right: 0;
+        margin-bottom: 12px;
+        max-width: 100%;
+    }
+    
+    .promo-price {
+        margin: 0 auto;
+    }
+    
+    .promo-image {
+        flex: 0 0 auto;
+    }
+    
+    .promo-badge {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+/* Disable text selection and drag during swipe */
+.carousel-track * {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Lightning icon override */
+.badge-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffd700;
+}

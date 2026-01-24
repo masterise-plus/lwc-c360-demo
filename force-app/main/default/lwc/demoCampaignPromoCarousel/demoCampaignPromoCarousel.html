@@ -1,0 +1,66 @@
+<template>
+    <lightning-card title="Campaign and Promo" icon-name="standard:campaign">
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-track" 
+                     ontouchstart={handleTouchStart} 
+                     ontouchmove={handleTouchMove} 
+                     ontouchend={handleTouchEnd}
+                     onmousedown={handleMouseDown}
+                     onmousemove={handleMouseMove}
+                     onmouseup={handleMouseUp}
+                     onmouseleave={handleMouseLeave}
+                     style={trackStyle}>
+                    <template for:each={promoItems} for:item="item">
+                        <div key={item.id} class="carousel-slide">
+                            <div class="promo-card" style={item.cardStyle}>
+                                <template lwc:if={item.badge}>
+                                    <div class="promo-badge">
+                                        <lightning-icon icon-name="custom:custom25" size="xx-small" class="badge-icon"></lightning-icon>
+                                        <span class="badge-text">{item.badge}</span>
+                                    </div>
+                                </template>
+                                
+                                <div class="promo-content">
+                                    <template lwc:if={item.logo}>
+                                        <div class="promo-logo">{item.logo}</div>
+                                    </template>
+                                    
+                                    <h3 class="promo-title">{item.title}</h3>
+                                    
+                                    <template lwc:if={item.subtitle}>
+                                        <p class="promo-subtitle">{item.subtitle}</p>
+                                    </template>
+                                    
+                                    <div class="promo-price">
+                                        <span class="price-currency">Rp</span>
+                                        <span class="price-value">{item.price}</span>
+                                    </div>
+                                </div>
+                                
+                                <template lwc:if={item.hasImage}>
+                                    <div class="promo-image">
+                                        <div class="image-placeholder" style={item.imageStyle}></div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            
+            <div class="carousel-indicators">
+                <template for:each={indicators} for:item="indicator">
+                    <button 
+                        key={indicator.index}
+                        class={indicator.className}
+                        data-index={indicator.index}
+                        aria-label={indicator.ariaLabel}
+                        onclick={handleIndicatorClick}>
+                        <span class="slds-assistive-text">{indicator.ariaLabel}</span>
+                    </button>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

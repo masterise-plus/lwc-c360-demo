@@ -1,55 +1,6 @@
-/* Container */
-.warranty-container {
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* Header */
-.warranty-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.header-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.header-icon lightning-icon {
-    --slds-c-icon-color-foreground-default: #ffffff;
-}
-
-.header-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1e3a5f;
-    margin: 0;
-    flex: 1;
-}
-
-.header-avatar {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.avatar-initial {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
+/* Card Content */
+.card-content {
+    padding: 16px;
 }
 
 /* Warranty List */
@@ -215,17 +166,13 @@
 
 /* Responsive */
 @media (max-width: 480px) {
-    .warranty-container {
-        padding: 16px;
+    .card-content {
+        padding: 12px;
     }
 
     .warranty-card,
     .warranty-card-highlighted {
         padding: 14px 16px;
-    }
-
-    .header-title {
-        font-size: 16px;
     }
 }
 
@@ -248,4 +195,40 @@
     margin: 0;
     font-size: 14px;
     color: #6b7280;
+}
+
+/* Expiration Alert */
+.expiration-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #dc2626;
+    border: 1px solid #b91c1c;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+}
+
+.expiration-alert .alert-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.alert-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.alert-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.alert-description {
+    font-size: 13px;
+    color: #ffffff;
+    line-height: 1.4;
 }

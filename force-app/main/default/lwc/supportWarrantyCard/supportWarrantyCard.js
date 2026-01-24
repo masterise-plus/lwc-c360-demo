@@ -66,8 +66,38 @@ export default class SupportWarrantyCard extends LightningElement {
         return this.allWarranties.slice(0, this.displayLimit).map((warranty, index) => ({
             ...warranty,
             cardClass: index === 0 ? 'warranty-card-highlighted' : 'warranty-card',
-            statusClass: this.getStatusClass(warranty.status)
+            statusClass: this.getStatusClass(warranty.status),
+            isExpiringSoon: this.isWarrantyExpiringSoon(warranty.expirationDate)
         }));
+    }
+
+    // Check if warranty is expiring within 90 days
+    isWarrantyExpiringSoon(expirationDateStr) {
+        if (!expirationDateStr) return false;
+        
+        // Parse date from format "03 April 2026 14:23 WIB"
+        const dateMatch = expirationDateStr.match(/(\d{2})\s+(\w+)\s+(\d{4})/);
+        if (!dateMatch) return false;
+        
+        const monthNames = {
+            'January': 0, 'February': 1, 'March': 2, 'April': 3,
+            'May': 4, 'June': 5, 'July': 6, 'August': 7,
+            'September': 8, 'October': 9, 'November': 10, 'December': 11
+        };
+        
+        const day = parseInt(dateMatch[1], 10);
+        const month = monthNames[dateMatch[2]];
+        const year = parseInt(dateMatch[3], 10);
+        
+        if (month === undefined) return false;
+        
+        const expirationDate = new Date(year, month, day);
+        const today = new Date();
+        const diffTime = expirationDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Return true if expiring within 90 days and not already expired
+        return diffDays > 0 && diffDays <= 90;
     }
 
     get hasWarranties() {
@@ -76,6 +106,50 @@ export default class SupportWarrantyCard extends LightningElement {
 
     get hasMoreWarranties() {
         return this.allWarranties.length > this.displayLimit;
+    }
+
+    // Check if any warranty is expiring soon
+    get hasExpiringWarranties() {
+        return this.allWarranties.some(warranty => this.isWarrantyExpiringSoon(warranty.expirationDate));
+    }
+
+    // Get the soonest expiring warranty days count
+    get expirationAlertTitle() {
+        let minDays = Infinity;
+        
+        for (const warranty of this.allWarranties) {
+            const days = this.getDaysUntilExpiration(warranty.expirationDate);
+            if (days > 0 && days <= 90 && days < minDays) {
+                minDays = days;
+            }
+        }
+        
+        return minDays !== Infinity ? `This subscription will expire in ${minDays} days.` : '';
+    }
+
+    // Get days until expiration for a warranty
+    getDaysUntilExpiration(expirationDateStr) {
+        if (!expirationDateStr) return -1;
+        
+        const dateMatch = expirationDateStr.match(/(\d{2})\s+(\w+)\s+(\d{4})/);
+        if (!dateMatch) return -1;
+        
+        const monthNames = {
+            'January': 0, 'February': 1, 'March': 2, 'April': 3,
+            'May': 4, 'June': 5, 'July': 6, 'August': 7,
+            'September': 8, 'October': 9, 'November': 10, 'December': 11
+        };
+        
+        const day = parseInt(dateMatch[1], 10);
+        const month = monthNames[dateMatch[2]];
+        const year = parseInt(dateMatch[3], 10);
+        
+        if (month === undefined) return -1;
+        
+        const expirationDate = new Date(year, month, day);
+        const today = new Date();
+        const diffTime = expirationDate.getTime() - today.getTime();
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
 
     connectedCallback() {
