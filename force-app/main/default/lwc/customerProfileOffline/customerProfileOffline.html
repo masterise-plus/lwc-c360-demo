@@ -1,0 +1,393 @@
+<template>
+    <!-- <lightning-card title="Customer Profile" icon-name="standard:person_account"> -->
+    <lightning-card>
+        <template if:true={record}>
+            <div class="profile-container">
+                <!-- Header -->
+                <div class="profile-header">
+                    <div class="profile-photo profile-photo--lg">
+                        <template if:true={record.ssot__PhotoURL__c}>
+                            <img src={record.ssot__PhotoURL__c}
+                                alt="Profile Photo"
+                                class="profile-img"
+                                onerror={handleImageError} />
+                        </template>
+                        <template if:false={record.ssot__PhotoURL__c}>
+                            <lightning-icon icon-name="standard:user" size="large" class="profile-img-icon"></lightning-icon>
+                        </template>
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="profile-name">{record.FullName}</div>
+                        <div class="profile-city">{record.City__c}</div>
+                    </div>
+                </div>
+
+
+                <!-- Informasi utama -->
+                <div class="info-section">
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:identity" size="x-small"></lightning-icon>
+                        <span class="label">Customer ID</span>
+                        <span class="value">{record.ssot__Id__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:email" size="x-small"></lightning-icon>
+                        <span class="label">Email Address</span>
+                        <span class="value">{record.ssot__EmailAddress__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:call" size="x-small"></lightning-icon>
+                        <span class="label">Phone Number</span>
+                        <span class="value">{record.phone_number}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Member Tier</span>
+                        <span class="value">{record.Tier__c}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Member Age</span>
+                        <span class="value">{record.formatAge}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <lightning-icon class="white-icon" icon-name="utility:promotion_tiers" size="x-small"></lightning-icon>
+                        <span class="label">Point</span>
+                        <span class="value">{record.ssot__PointsBalanceNumber__c}</span>
+                    </div>
+
+                    
+                </div>
+
+                <hr class="divider" />
+
+                <div>
+                    <div class="segment-section">
+                        <div class="segment-header">
+                            <span class="icon-frame">
+                                <lightning-icon class="white-icon" icon-name="utility:buyer_group_qualifier" size="x-small"></lightning-icon>
+                            </span>
+                            <span class="label">Member Of</span>
+                        </div>
+                        <template if:true={showHardcodedBadges}>
+                            <div class="bu-list-container">
+                                <span class="logo-current-bu"><img src="https://demo04-logo-erafone.edgeone.app/erafone.png" alt="Erafone" /></span>
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-grand-lucky.edgeone.app/grandlucky.png" alt="Grand Lucky" /></span>
+                                <span class="logo"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-under-armour.edgeone.app/under%20armour.png" alt="Under Armour" /></span>
+                                <span class="logo"><img src="https://demo04-logo-xpeng.edgeone.app/xpeng.png" alt="XPENG" /></span>      
+                            </div>
+                            <!-- <hr class="divider" />
+                            <div class="bu-list-container">
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-grand-lucky.edgeone.app/grandlucky.png" alt="Grand Lucky" /></span>
+                                <span class="logo"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-under-armour.edgeone.app/under%20armour.png" alt="Under Armour" /></span>
+                                <span class="logo"><img src="https://demo04-logo-xpeng.edgeone.app/xpeng.png" alt="XPENG" /></span>                                
+                            </div> -->
+                        </template>
+
+                        <template if:true={showHardcodedBadgesBudi}>
+                           <div class="bu-list-container">
+                                <span class="logo-current-bu"><img src="https://demo04-logo-erafone.edgeone.app/erafone.png" alt="Erafone" /></span>
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-wilson.edgeone.app/Wilson.png" alt="Wilson" /></span>
+                            </div>
+                            <!-- <hr class="divider" />
+                            <div class="bu-list-container">
+                                <span class="logo"><img src="https://demo04-logo-eraspace.edgeone.app/eraspace-clean.png" alt="Eraspace" /></span>
+                                <span class="logo"><img src="https://demo04-logo-ibox.edgeone.app/ibox.png" alt="iBox" /></span>
+                                <span class="logo"><img src="https://demo04-logo-jd-sports.edgeone.app/jd%20sports.png" alt="JDSports" /></span>
+                                <span class="logo"><img src="https://demo04-logo-paris-baguette.edgeone.app/paris%20baguette.jpg" alt="Paris Baguette" /></span>
+                                <span class="logo"><img src="https://demo04-logo-wilson.edgeone.app/Wilson.png" alt="Wilson" /></span>
+                            </div> -->
+                        </template>
+                    </div>
+                </div>
+                
+
+                <hr class="divider" />
+
+                <!-- Segment Section -->
+                <!-- <div class="segment-section">
+                    <div class="segment-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:chart" size="x-small"></lightning-icon>
+                        </span>
+                        <span class="label">Segment</span>
+                    </div>
+                    <lightning-tabset active-tab-value={activeTab}>
+                        <lightning-tab label="Er" value="Er" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="Ef" value="Ef" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="JD" value="JD" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="iB" value="iB" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="PB" value="PB" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="UA" value="UA" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="AS" value="AS" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+
+                        <lightning-tab label="Others" value="Others" onactive={handleTabActive}>
+                            <div class="segment-list">
+                                <template for:each={filteredSegmentNames} for:item="segmentName">
+                                    <div key={segmentName} class="segment-badge">{segmentName}</div>
+                                </template>
+
+                                <template if:false={hasFilteredSegments}>
+                                    <div class="slds-text-body_small slds-m-around_medium">No Segment</div>
+                                </template>
+                            </div>
+                        </lightning-tab>
+                    </lightning-tabset>
+                </div>
+
+                <hr class="divider" /> -->
+
+                <!-- Lifetime Value -->
+                <div class="ltv-container">
+                    <div class="ltv-header">
+                        <span class="icon-frame">
+                            <lightning-icon icon-name="utility:money" size="x-small" class="white-icon"></lightning-icon>
+                        </span>
+                        <span class="label">Lifetime Value (LTV)</span>
+                    </div>
+
+                    <div class="ltv-grid">
+                        <div class="ltv-box global">
+                            <div class="ltv-box-label">Current Business Unit Spend</div>
+                            <div class="ltv-box-value">{formattedBuLTV}</div>
+                        </div>
+
+                        <div class="ltv-box bu">
+                            <div class="ltv-box-label">Global Spend</div>
+                            <div class="ltv-box-value">Rp {record.LTV}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider" />
+
+                <div class="preferred-list">
+                    <div class="preferred-list-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:case" size="x-small" ></lightning-icon>
+                        </span>
+                        <span class="label">Preferred Payment</span>
+                    </div>
+                    <div>
+                        <template if:true={preferredPayments}>
+                            <div class="payment-card">
+                                <div class="payment-scroll">
+                                    <table class="payment-table">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th>BU</th> -->
+                                                <th>Bank</th>
+                                                <th>Payment Method</th>
+                                                <th>Payment Scheme</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={preferredPayments} for:item="item">
+                                                <tr key={item.bu}>
+                                                    <!-- <td>{item.bu}</td> -->
+                                                    <td>{item.paymentBank}</td>
+                                                    <td>{item.paymentMethod}</td>
+                                                    <td>{item.paymentScheme }</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </template>
+    
+                        <template if:false={preferredPayments.length}>
+                            <div class="slds-text-body_small slds-p-around_medium">No preferred payment data available.</div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- <hr class="divider" /> -->
+
+                <!-- Engagement Score Section -->
+                <!-- <div class="engagement-container">
+                    <div class="engagement-header">
+                        <span class="icon-frame">
+                            <lightning-icon class="white-icon" icon-name="utility:adduser" size="x-small"></lightning-icon>
+                        </span>
+                        <span class="engagement-title">Engagement Score</span>                        
+                    </div>
+
+
+                    <div class="gauge-wrapper">
+                        <svg viewBox="0 0 100 50" class="gauge"> -->
+                            <!-- background arc -->
+                            <!-- <path
+                                d="M10,45 A40,40 0 0,1 90,45"
+                                stroke="#e0e0e0"
+                                stroke-width="8"
+                                fill="none"
+                                stroke-linecap="round">
+                            </path> -->
+
+                            <!-- dynamic arc -->
+                            <!-- <path
+                                d="M10,45 A40,40 0 0,1 90,45"
+                                stroke={gaugeColor}
+                                stroke-width="8"
+                                fill="none"
+                                stroke-linecap="round"
+                                style={gaugeStyle}>
+                            </path>
+                        </svg>
+
+                        <div class="engagement-text">
+                            <span class="engagement-percent">{record.engagement_score}%</span>
+                            <span class = engagement-percent> - </span>
+                            <span class="status">{record.engagement_label}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider" /> -->
+
+                <!-- Profile Data -->
+                <!-- <div class="profile-data-section">
+                    <div class="profile-data-row">
+                        <span class="label">Profile Data:</span>
+                        <div class="icon-group">
+                            <lightning-icon icon-name="utility:profile_alt" size="small" class="white-icon"></lightning-icon>
+                            <lightning-icon icon-name="utility:cart" size="small" class="white-icon"></lightning-icon>
+                            <lightning-icon icon-name="utility:heart" size="small" class="white-icon"></lightning-icon>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </template>
+
+
+        <template if:false={record}>
+            <template if:false={isLoading}>
+                <div class="empty-state-container">
+                    <div class="empty-state-content">
+                        <div class="empty-icon-circle">
+                            <lightning-icon 
+                                icon-name="utility:user" 
+                                size="large" 
+                                variant="inverse"
+                                class="muted-icon">
+                            </lightning-icon>
+                        </div>
+                        
+                        <h2 class="empty-title">No Customer Selected</h2>
+                        <p class="empty-message">
+                            Please select a customer from the list to view their full profile.
+                        </p>
+                        
+                        <div class="skeleton-placeholder-group">
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line short"></div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+        <template if:true={error}>
+            <p class="slds-text-color_error slds-p-around_medium">{error}</p>
+        </template>
+    </lightning-card>
+</template>

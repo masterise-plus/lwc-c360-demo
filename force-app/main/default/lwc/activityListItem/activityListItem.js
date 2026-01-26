@@ -4,12 +4,15 @@ import RECORD_SELECTED_CHANNEL from '@salesforce/messageChannel/UnifiedIndividua
 import getSalesOrderItemByUnifiedId from '@salesforce/apex/Customer360Controller.getSalesOrderItemByUnifiedId';
 
 export default class ActivityListItem extends LightningElement {
+
     @wire(MessageContext) messageContext;
-    subscription;
 
     @track salesorderitem = [];
     @track error;
     @track isLoading = false;
+
+    @track isFieldModalOpen = false;
+    @track isAllDataModalOpen = false;
 
     @track selectedFields = [
         'Transaction_Date',
@@ -18,48 +21,35 @@ export default class ActivityListItem extends LightningElement {
         'ssot__OrderedQuantity__c',
         'ssot__TotalLineAmount__c'
     ];
-    @track tempSelectedFields = [];
-    @track isFieldModalOpen = false;
 
-    defaultSortDirection = 'desc';
+    @track tempSelectedFields = [];
+
+    /* =======================
+       Preview table
+    ======================= */
+    displayLimit = 5;
     sortDirection = 'desc';
     sortedBy = 'Transaction_Date';
 
-    @track displayLimit = 5;
-    @track showAll = false;
+    /* =======================
+       Modal pagination
+    ======================= */
+    modalPageSize = 15;
+    @track modalCurrentPage = 1;
 
     availableFields = [
         { label: 'Transaction ID', value: 'Sales_Order_Id', type: 'text' },
         { label: 'Transaction Date', value: 'Transaction_Date', type: 'date' },
-        { label: 'Store ID', value: 'Store_Id', type: 'text' },
-        { label: 'Store Name', value: 'Store_Name', type: 'text' },
-        { label: 'Product ID', value: 'Product_Id', type: 'text' },
         { label: 'Product Name', value: 'Product_Name', type: 'text' },
-        { label: 'Brand', value: 'Brand', type: 'text' },
-        { label: 'Category Level 1', value: 'Category', type: 'text' },
-        { label: 'Category Level 2', value: 'Category_Lv2', type: 'text' },
-        {
-            label: 'Quantity',
-            value: 'ssot__OrderedQuantity__c',
-            type: 'number',
-            typeAttributes: { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-        },
-        {
-            label: 'Unit Price',
-            value: 'ssot__UnitPriceAmount__c',
-            type: 'number',
-            typeAttributes: { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-        },
-        {
-            label: 'Total Line',
-            value: 'ssot__TotalLineAmount__c',
-            type: 'number',
-            typeAttributes: { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-        }
+        { label: 'Quantity', value: 'ssot__OrderedQuantity__c', type: 'number' },
+        { label: 'Total Line', value: 'ssot__TotalLineAmount__c', type: 'number' }
     ];
 
+    /* =======================
+       LMS subscription
+    ======================= */
     connectedCallback() {
-        this.subscription = subscribe(
+        subscribe(
             this.messageContext,
             RECORD_SELECTED_CHANNEL,
             (message) => this.handleRecordSelection(message)
@@ -71,6 +61,9 @@ export default class ActivityListItem extends LightningElement {
         this.loadSalesOrderItem(message.recordId);
     }
 
+    /* =======================
+       Data loading
+    ======================= */
     loadSalesOrderItem(unifiedId) {
         this.isLoading = true;
         this.salesorderitem = [];
@@ -86,16 +79,11 @@ export default class ActivityListItem extends LightningElement {
                 }));
 
                 mapped.sort((a, b) => {
-                    const dateA = a.Transaction_Date ? new Date(a.Transaction_Date) : 0;
-                    const dateB = b.Transaction_Date ? new Date(b.Transaction_Date) : 0;
-                    return dateB - dateA;
+                    return (b.Transaction_Date || 0) - (a.Transaction_Date || 0);
                 });
 
-                this.salesorderitem = [...mapped];
-                this.sortedBy = 'Transaction_Date';
-                this.sortDirection = 'desc';
-                this.showAll = false;
-                this.displayLimit = 5;
+                this.salesorderitem = mapped;
+                this.modalCurrentPage = 1; // reset modal page
             })
             .catch((err) => {
                 this.error = err?.body?.message || err.message;
@@ -105,47 +93,40 @@ export default class ActivityListItem extends LightningElement {
             });
     }
 
+    /* =======================
+       Preview helpers
+    ======================= */
     get visibleSalesOrderItem() {
-        return this.showAll
-            ? this.salesorderitem
-            : this.salesorderitem.slice(0, this.displayLimit);
+        return this.salesorderitem.slice(0, this.displayLimit);
     }
 
     get canShowMore() {
-        return this.salesorderitem.length > this.displayLimit && !this.showAll;
+        return this.salesorderitem.length > this.displayLimit;
     }
 
-    get canShowLess() {
-        return this.showAll;
-    }
-
-    handleShowMore() {
-        this.showAll = true;
-    }
-
-    handleShowLess() {
-        this.showAll = false;
-    }
-
-    sortBy(field, reverse, primer) {
-        const key = primer ? (x) => primer(x[field]) : (x) => x[field];
-        return function (a, b) {
-            a = key(a);
-            b = key(b);
-            return reverse * ((a > b) - (b > a));
-        };
-    }
-
+    /* =======================
+       Sorting (shared)
+    ======================= */
     onHandleSort(event) {
-        const { fieldName: sortedBy, sortDirection } = event.detail;
-        const cloneData = [...this.salesorderitem];
-
-        cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
-        this.salesorderitem = cloneData;
+        const { fieldName, sortDirection } = event.detail;
+        this.sortedBy = fieldName;
         this.sortDirection = sortDirection;
-        this.sortedBy = sortedBy;
+
+        const cloneData = [...this.salesorderitem];
+        cloneData.sort((a, b) => {
+            const v1 = a[fieldName];
+            const v2 = b[fieldName];
+            return sortDirection === 'asc'
+                ? (v1 > v2 ? 1 : -1)
+                : (v1 < v2 ? 1 : -1);
+        });
+        this.salesorderitem = cloneData;
+        this.modalCurrentPage = 1; // reset page after sort
     }
 
+    /* =======================
+       Field selector
+    ======================= */
     openFieldSelector() {
         this.tempSelectedFields = [...this.selectedFields];
         this.isFieldModalOpen = true;
@@ -166,18 +147,68 @@ export default class ActivityListItem extends LightningElement {
 
     get displayColumns() {
         return this.selectedFields.map((field) => {
-            const fieldMeta = this.availableFields.find((f) => f.value === field);
+            const meta = this.availableFields.find((f) => f.value === field);
             return {
-                label: fieldMeta?.label || field,
+                label: meta?.label || field,
                 fieldName: field,
-                type: fieldMeta?.type || 'text',
-                typeAttributes: fieldMeta?.typeAttributes,
+                type: meta?.type || 'text',
                 sortable: true
             };
         });
     }
 
+    /* =======================
+       Modal pagination logic
+    ======================= */
+  
+    modalCurrentPage = 1
+
+    get modalTotalPages() {
+        return Math.ceil(this.salesorderitem.length / this.modalPageSize);
+    }
+
+    get modalPagedData() {
+        const start = (this.modalCurrentPage - 1) * this.modalPageSize;
+        const end = start + this.modalPageSize;
+        return this.salesorderitem.slice(start, end);
+    }
+
+    handleModalPrev() {
+        if (this.modalCurrentPage > 1) {
+            this.modalCurrentPage--;
+            this.modalPagedData();
+        }
+    }
+
+    handleModalNext() {
+        if (this.modalCurrentPage < this.modalTotalPages) {
+            this.modalCurrentPage++;
+            this.modalPagedData();
+        }
+    }
+
+    get canModalPrev() {
+        return this.modalCurrentPage === 1;
+    }
+
+    get canModalNext() {
+        return this.modalCurrentPage === this.modalTotalPages;
+    }
+
+
+    /* =======================
+       Modal open / close
+    ======================= */
+    openAllDataModal() {
+        this.modalCurrentPage = 1;
+        this.isAllDataModalOpen = true;
+    }
+
+    closeAllDataModal() {
+        this.isAllDataModalOpen = false;
+    }
+
     get noData() {
-        return !this.isLoading && Array.isArray(this.salesorderitem) && this.salesorderitem.length === 0;
+        return !this.isLoading && this.salesorderitem.length === 0;
     }
 }

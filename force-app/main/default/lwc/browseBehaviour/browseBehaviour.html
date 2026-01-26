@@ -1,0 +1,83 @@
+<template>
+  <lightning-card title="Browse Behaviour" icon-name="standard:device">
+    
+    <!-- Data Display -->
+    <template if:true={data}>
+        <div class="score-grid">
+            <div class="type-box mobile-app">
+                <div class="label">Mobile App Installed</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:phone_portrait" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{mobileAppDisplay}</div>
+                </div>
+            </div>
+
+            <div class="type-box device">
+                <div class="label">Device Type</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:desktop_and_phone" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{data.device_type__c}</div>
+                </div>
+            </div>
+
+            <div class="type-box geo">
+                <div class="label">Geo + Language + Timezone</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:checkin" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{geoDisplay}</div>
+                </div>
+            </div>
+
+            <div class="type-box browser">
+                <div class="label">Browser</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:world" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{browserDisplay}</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Loading State -->
+    <template if:true={isLoading}>
+      <div class="slds-align_absolute-center slds-p-vertical_medium">
+        <lightning-spinner alternative-text="Loading browse behaviour..." size="small"></lightning-spinner>
+      </div>
+    </template>
+
+    <!-- Error State -->
+    <template if:true={error}>
+      <div class="error slds-p-around_medium">
+        ⚠️ {error}
+      </div>
+    </template>
+
+    <!-- No Data State -->
+    <template if:false={data}>
+      <template if:false={isLoading}>
+        <template if:false={error}>
+          <p class="slds-text-body_small slds-p-around_medium slds-text-align_center">
+            Select a customer to view browse behaviour data.
+          </p>
+        </template>
+      </template>
+    </template>
+
+  </lightning-card>
+</template>

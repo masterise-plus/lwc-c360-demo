@@ -1,24 +1,62 @@
-/* Semua komponen sejajar horizontal */
-.search-bar {
+/* Container utama - flexbox untuk search bar dan logo */
+.search-card-container {
     display: flex;
     align-items: flex-end;
     gap: 1rem;
-}
-
-
-/* Setiap komponen punya lebar proporsional */
-.field-item {
-    flex: 1;
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Search bar mengambil space sebanyak mungkin */
+.search-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+/* Setiap field item */
+.field-item {
+    flex: 1;
     max-width: 200px;
 }
 
 /* Keyword input area + dropdown suggestion */
 .keyword-container {
     position: relative;
-    flex: 2; /* sedikit lebih lebar dari combobox */
-    max-width: 250px;
+    flex: 2;
+    max-width: 300px;
+}
+
+/* Tombol search */
+.button-container {
+    flex: 0 0 auto;
+    max-width: none;
+}
+
+/* Logo wrapper - tetap di kanan */
+.logo-wrapper {
+    flex: 0 0 auto;
+    margin-right: 1rem;
+}
+
+.logo {
+    width: 100px;
+    height: 60px;
+    border-radius: 10px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 /* Dropdown suggestion */
@@ -33,29 +71,64 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     max-height: 250px;
     overflow-y: auto;
-    z-index: 5;
+    z-index: 1000;
 }
 
 .suggestion-item {
     padding: 0.5rem 0.75rem;
     cursor: pointer;
+    transition: background-color 0.15s;
 }
+
 .suggestion-item:hover {
     background-color: #f3f6f9;
+    color: #021dea;
 }
 
-/* Tombol sedikit turun agar sejajar bawah input */
-.button-container {
-    padding-bottom: 0.25rem;
+.suggestion-item.disabled {
+    cursor: default;
+    color: #706e6b;
 }
 
-/* Responsif: tumpuk ke bawah jika layar kecil */
+.suggestion-item.disabled:hover {
+    background-color: transparent;
+    color: #706e6b;
+}
+
+/* Spinner overlay */
+.spinner-overlay {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+/* Error message */
+.error {
+    padding: 0.75rem 1rem;
+    color: #ba0517;
+    text-align: center;
+}
+
+/* Responsive: stack ke bawah pada layar kecil */
 @media (max-width: 768px) {
-    .search-bar {
+    .search-card-container {
         flex-direction: column;
         align-items: stretch;
     }
-    .field-item {
+
+    .search-bar {
+        flex-wrap: wrap;
+    }
+
+    .field-item,
+    .keyword-container {
+        max-width: none;
         width: 100%;
+    }
+
+    .logo-wrapper {
+        align-self: center;
+        margin-top: 1rem;
+        margin-bottom: 0;
     }
 }

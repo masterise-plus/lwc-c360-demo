@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="On Going Campaign & Promo" icon-name="standard:campaign">
+        <div class="carousel-main-container" onmouseenter={stopAutoPlay} onmouseleave={startAutoPlay}>
+            
+            <button class="nav-btn prev" onclick={handlePrev}>
+                <lightning-icon icon-name="utility:chevronleft" size="xx-small"></lightning-icon>
+            </button>
+            <button class="nav-btn next" onclick={handleNext}>
+                <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+            </button>
+
+            <div class="carousel-viewport">
+                <div class="carousel-track" style={trackStyle} ontransitionend={handleTransitionEnd}>
+                    <template for:each={promos} for:item="promo">
+                        <div key={promo.id} class={promo.className}>
+                            <img src={promo.image} alt={promo.title} draggable="false" />
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="dots-container">
+                <template for:each={dots} for:item="dot">
+                    <span 
+                        key={dot.index} 
+                        class={dot.className} 
+                        data-index={dot.index}
+                        onclick={handleDotClick}>
+                    </span>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

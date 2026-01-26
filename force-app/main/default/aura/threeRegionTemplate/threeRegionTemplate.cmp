@@ -1,20 +1,28 @@
 <aura:component implements="lightning:appHomeTemplate" description= "Custom Page Template">
+    <aura:attribute name="header" type="Aura.Component[]" description= "Header Region" />
     <aura:attribute name="left" type="Aura.Component[]" description= "Left Region" />
     <aura:attribute name="main" type="Aura.Component[]" description= "Main Region"/>
     <aura:attribute name="right" type="Aura.Component[]" description= "Right Region" />
 
     <div>
+        <!-- Header -->
         <lightning:layout>
+            <lightning:layoutItem padding="around-small" size="12">
+                {!v.header}
+            </lightning:layoutItem>
+        </lightning:layout>
 
+        <!-- Main -->
+        <lightning:layout>
             <lightning:layoutItem padding="around-small" size="4">
                 {!v.left}
             </lightning:layoutItem>
 
-            <lightning:layoutItem padding="around-small" size="5">
+            <lightning:layoutItem padding="around-small" size="4">
                 {!v.main}
             </lightning:layoutItem>
 
-            <lightning:layoutItem padding="around-small" size="3.5">
+            <lightning:layoutItem padding="around-small" size="4">
                 {!v.right}
             </lightning:layoutItem>
         </lightning:layout>

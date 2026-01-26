@@ -1,0 +1,71 @@
+<template>
+  <lightning-card title="Customer Acquisition" icon-name="standard:procedure">
+    
+    <!-- Data Display -->
+    <template if:true={data}>
+        <div class="score-grid">
+            <div class="type-box source-medium">
+                <div class="label">Source / Medium</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:add_source" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{sourceMediumDisplay}</div>
+                </div>
+            </div>
+
+            <div class="type-box campaign">
+                <div class="label">Campaign</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:campaign" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{campaignDisplay}</div>
+                </div>
+            </div>
+
+            <div class="type-box referrer">
+                <div class="label">Referrer</div>
+                <div class="value-container">
+                    <lightning-icon 
+                        icon-name="utility:link" 
+                        size="small" 
+                        style="--slds-c-icon-color-foreground-default: #FF8800">
+                    </lightning-icon>
+                    <div class="value">{referrerDisplay}</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Loading State -->
+    <template if:true={isLoading}>
+      <div class="slds-align_absolute-center slds-p-vertical_medium">
+        <lightning-spinner alternative-text="Loading browse behaviour..." size="small"></lightning-spinner>
+      </div>
+    </template>
+
+    <!-- Error State -->
+    <template if:true={error}>
+      <div class="error slds-p-around_medium">
+        ⚠️ {error}
+      </div>
+    </template>
+
+    <!-- No Data State -->
+    <template if:false={data}>
+      <template if:false={isLoading}>
+        <template if:false={error}>
+          <p class="slds-text-body_small slds-p-around_medium slds-text-align_center">
+            Select a customer to view customer acquisition data.
+          </p>
+        </template>
+      </template>
+    </template>
+
+  </lightning-card>
+</template>

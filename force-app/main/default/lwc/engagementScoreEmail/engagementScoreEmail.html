@@ -1,0 +1,43 @@
+<template>
+  <lightning-card title="Email Engagement" icon-name="standard:email_chatter">
+    <template if:true={data}>
+        <div class="score-grid">
+            <div class="type-box subscribe">
+                <div class="label">Email Subscribe</div>
+                 <div class="value-container">
+                    <lightning-icon icon-name='utility:notification' size='small' style="--slds-c-icon-color-foreground-default: #FF8800"></lightning-icon>
+                    <div class="value" >{data.Email_Subscribe} %</div>
+                </div>
+            </div>
+
+            <div class="type-box click">
+                <div class="label">Email Click</div>
+                <div class="value-container">
+                    <lightning-icon icon-name='utility:arrow_right' size='small' style="--slds-c-icon-color-foreground-default: #FF8800"></lightning-icon>
+                    <div class="value" >{data.Email_Engagement} %</div>
+                </div>
+            </div>
+
+            <div class="type-box read">
+                <div class="label">Email Open</div>
+                <div class="value-container">
+                    <lightning-icon icon-name='utility:email_open' size='small' style="--slds-c-icon-color-foreground-default: #FF8800"></lightning-icon>
+                    <div class="value" >{data.Email_Open} %</div>
+                </div>
+            </div>
+
+            
+        </div>
+    </template>
+
+    <template if:true={isLoading}>
+      <div class="slds-align_absolute-center slds-p-vertical_medium">
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+      </div>
+    </template>
+
+    <template if:true={error}>
+      <p class="slds-text-color_error slds-p-around_medium">{error}</p>
+    </template>
+  </lightning-card>
+</template>

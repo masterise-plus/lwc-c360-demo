@@ -1,0 +1,51 @@
+.score-grid {
+  margin: 0 1rem;            /* samakan margin kiri-kanan dengan header */
+  padding: 8px;
+  display: grid;
+  gap: 12px 24px;
+  align-items: start;
+
+  /* default: 2 kolom */
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  grid-template-areas:
+    "source-medium campaign"
+    "referrer referrer";
+}
+
+.type-box {
+  text-align: left;
+}
+
+.source-medium { grid-area: source-medium; }
+.campaign { grid-area: campaign; }
+.referrer { grid-area: referrer; }
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.value-container{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: 300px;
+  color: #1b3b6f;
+}
+
+/* kalau layar sempit / tidak muat -> turun kebawah (1 kolom) */
+@media (max-width: 400px) {
+  .score-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "source-medium"
+      "campaign"
+      "referrer";
+  }
+}

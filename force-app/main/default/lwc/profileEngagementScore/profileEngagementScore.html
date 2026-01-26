@@ -1,0 +1,58 @@
+<template>
+    <lightning-card title="Engagement Score" icon-name="standard:people_score">
+        
+        <template if:true={record}>
+            <div class="profile-container">
+                <div class="engagement-container">
+                    <div class="gauge-wrapper">
+                        <div class="gauge-box">
+                            <svg viewBox="0 0 100 50" class="gauge">
+                                <path
+                                    d="M10,45 A40,40 0 0,1 90,45"
+                                    stroke="#e0e0e0"
+                                    stroke-width="10"
+                                    fill="none"
+                                    stroke-linecap="round">
+                                </path>
+
+                                <path
+                                    d="M10,45 A40,40 0 0,1 90,45"
+                                    stroke={gaugeColor}
+                                    stroke-width="10"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    style={gaugeStyle}>
+                                </path>
+                            </svg>
+
+                            <div class="gauge-center">
+                                <div class="gauge-percent" style={textStyle}>{record.engagement_score}%</div>
+                            </div>
+                        </div>
+
+                        <div class="gauge-desc">{record.engagement_label}</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_large">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <p class="slds-text-color_error slds-p-around_medium slds-text-align_center">{error}</p>
+        </template>
+
+        <template if:false={record}>
+            <template if:false={isLoading}>
+                <p class="slds-text-body_small slds-p-around_medium slds-text-align_center">
+                    Select a customer to view profile engagement score chart.
+                </p>
+            </template>
+        </template>
+
+    </lightning-card>
+</template>

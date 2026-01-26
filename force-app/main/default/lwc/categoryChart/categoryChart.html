@@ -1,7 +1,35 @@
 <template>
-    <lightning-card title="Top 3 Category" icon-name="standard:category">
-        <div class="chart-container">
-            <canvas lwc:dom="manual"></canvas>
+    <lightning-card title="Top 3 Product Category" icon-name="standard:category">
+        
+        <template if:true={isLoading}>
+            <div class="slds-align_absolute-center slds-p-vertical_medium">
+                <lightning-spinner alternative-text="Loading chart..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-p-around_medium slds-text-color_error">
+                ⚠️ {error}
+            </div>
+        </template>
+
+        <div class={chartContainerClass}>
+            <template if:true={data}>
+                <div class="chart-wrapper">
+                    <canvas lwc:dom="manual"></canvas>
+                </div>
+            </template>
         </div>
+
+        <template if:false={data}>
+            <template if:false={isLoading}>
+                <template if:false={error}>
+                    <p class="slds-text-body_small slds-p-around_medium slds-text-align_center">
+                        Select a customer to view top 3 product category chart.
+                    </p>
+                </template>
+            </template>
+        </template>
+        
     </lightning-card>
 </template>

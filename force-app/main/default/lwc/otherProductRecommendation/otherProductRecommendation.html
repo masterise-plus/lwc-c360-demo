@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="Other Product Recommendation" icon-name="standard:product_item">
+        <template if:true={record}>
+
+            <div class="carousel-main-container">
+                <button class="nav-btn prev" onclick={handlePrev} aria-label="Previous">
+                    <lightning-icon icon-name="utility:chevronleft" size="xx-small"></lightning-icon>
+                </button>
+                <button class="nav-btn next" onclick={handleNext} aria-label="Next">
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </button>
+    
+                <div class="carousel-viewport" 
+                     onpointerdown={handlePointerDown} 
+                     onpointermove={handlePointerMove} 
+                     onpointerup={handlePointerUp}
+                     onpointercancel={handlePointerUp}>
+                    
+                    <div class="product-track" style={trackStyle}>
+                        <template for:each={displayProducts} for:item="product">
+                            <div key={product.id} class="product-card">
+                                <div class="image-box">
+                                    <img src={product.image} alt={product.name} ondragstart={preventDrag} draggable="false">
+                                </div>
+                                <div class="product-info">
+                                    <p class="product-name">{product.name}</p>
+                                    <div class="price-row">
+                                        <p class="old-price">{product.originalPrice}</p>
+                                        <span class="discount-badge">{product.discount}</span>
+                                    </div>
+                                        <span class="current-price">{product.currentPrice}</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+    
+                <div class="dots-container">
+                    <template for:each={dots} for:item="dot">
+                        <span 
+                            key={dot.index} 
+                            class={dot.className} 
+                            onclick={handleDotClick} 
+                            data-index={dot.index}>
+                        </span>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

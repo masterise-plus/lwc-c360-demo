@@ -152,5 +152,4 @@ export default class HelloWorld extends LightningElement {
     get isSearchById() {
         return (this.searchField || '').toLowerCase() === 'id';
     }
-
 }

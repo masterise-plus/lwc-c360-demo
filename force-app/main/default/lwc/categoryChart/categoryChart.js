@@ -7,7 +7,11 @@ import getTop3CategoryByQty from '@salesforce/apex/Customer360Controller.getTop3
 
 export default class CategoryChart extends LightningElement {
     @track unifiedId;
-    @track chart;
+    @track data;
+    @track isLoading = false;
+    @track error; // Tambahkan ini agar pesan error muncul di UI
+
+    chart = null; // Tidak perlu @track untuk objek ChartJs
     chartJsLoaded = false;
     subscription = null;
 
@@ -30,7 +34,6 @@ export default class CategoryChart extends LightningElement {
     handleRecordSelected(message) {
         if (message?.recordId) {
             this.unifiedId = message.recordId;
-            console.log('🎯 UnifiedId changed:', this.unifiedId);
             if (this.chartJsLoaded) {
                 this.fetchCategoryData();
             }
@@ -42,37 +45,50 @@ export default class CategoryChart extends LightningElement {
         loadScript(this, chartjs + '/chart.umd.js')
             .then(() => {
                 this.chartJsLoaded = true;
-                console.log('✅ ChartJS loaded');
                 if (this.unifiedId) this.fetchCategoryData();
             })
-            .catch(err => console.error('ChartJS load error', err));
+            .catch(err => {
+                this.error = 'Failed to load ChartJS';
+                console.error(err);
+            });
     }
 
     fetchCategoryData() {
-        if (!this.chartJsLoaded || !this.unifiedId) return;
+        if (!this.unifiedId) return;
 
-        console.log('📦 Fetching top categories for', this.unifiedId);
+        this.isLoading = true;
+        this.error = null;
+
         getTop3CategoryByQty({ unifiedId: this.unifiedId })
-            .then(data => {
-                console.log('📊 Data:', data);
-                if (data && data.length > 0) {
-                    this.renderChart(data);
-                } else {
-                    this.clearChart('No data available');
+            .then(result => {
+                this.data = result;
+                if (result && result.length > 0) {
+                    // Berikan jeda satu tick agar template merender canvas
+                    setTimeout(() => {
+                        this.renderChart(result);
+                    }, 50);
                 }
             })
-            .catch(error => {
-                console.error('❌ Error fetching category data:', error);
-                this.clearChart('Error loading data');
+            .catch((err) => {
+                console.error('Error:', err);
+                this.error = err.body?.message || err.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
     }
 
     renderChart(data) {
-        const ctx = this.template.querySelector('canvas')?.getContext('2d');
-        if (!ctx) return;
+        const canvas = this.template.querySelector('canvas');
+        if (!canvas) return;
 
-        if (this.chart) this.chart.destroy();
+        // BERSIHKAN CHART LAMA
+        const existingChart = window.Chart.getChart(canvas);
+        if (existingChart) {
+            existingChart.destroy();
+        }
 
+        const ctx = canvas.getContext('2d');
         const labels = data.map(d => d.Category || 'Unknown');
         const values = data.map(d => d.Qty || 0);
 
@@ -84,51 +100,52 @@ export default class CategoryChart extends LightningElement {
                     label: 'Quantity',
                     data: values,
                     backgroundColor: ['#6EC1E4', '#4FB0A9', '#A5D8A6'],
-                    borderRadius: 6,
-                    barThickness: 30,
-                    maxBarThickness: 30
+                    borderRadius: 3,
+                    barThickness: 25,
+                    maxBarThickness: 25
                 }]
             },
             options: {
                 indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
+                // Perbaikan struktur kurung di sini
                 animation: {
-                    duration: 1500,
+                    duration: 1200,
                     easing: 'easeOutQuart'
+                },
+                animations: {
+                    x: {
+                        from: 0,
+                        duration: 1200
+                    }
                 },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#333',
                         titleFont: { size: 13 },
                         bodyFont: { size: 12 }
                     }
                 },
                 scales: {
-                    x: { beginAtZero: true, grid: { display: false } },
-                    y: { grid: { display: false } }
+                    x: { 
+                        beginAtZero: true, 
+                        grid: { display: false },
+                        // Memberikan ruang agar bar tidak terpotong saat memanjang
+                        suggestedMax: Math.max(...values) + 1 
+                    },
+                    y: { 
+                        grid: { display: false } 
+                    }
                 }
             }
         });
     }
 
-    clearChart(message) {
-        const container = this.template.querySelector('.chart-container');
-        const canvas = this.template.querySelector('canvas');
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
+    // Pastikan chart dihancurkan saat komponen dilepas
+    disconnectedCallback() {
         if (this.chart) {
             this.chart.destroy();
-            this.chart = null;
         }
-
-        // Auto adjust container height if no data
-        container.style.height = 'auto';
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = '14px Arial';
-        ctx.fillStyle = '#666';
-        ctx.fillText(message, 10, 20);
     }
 }
