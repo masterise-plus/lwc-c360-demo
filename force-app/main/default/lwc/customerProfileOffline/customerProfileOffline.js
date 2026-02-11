@@ -13,6 +13,9 @@ export default class customerProfileOffline extends LightningElement {
     @track preferredPayments = [];
     @track isLoading = false;
     @track error;
+    @track showInStoreBadge = false; 
+    badgeTimer;
+    
 
     connectedCallback() {
         this.subscription = subscribe(
@@ -22,6 +25,12 @@ export default class customerProfileOffline extends LightningElement {
         );
     }
 
+    disconnectedCallback() {
+        if (this.badgeTimer) {
+            clearTimeout(this.badgeTimer);
+        }
+    }
+
     handleRecordSelection(message) {
         if (!message || !message.recordId) {
             this.error = 'Invalid recordId received';
@@ -29,6 +38,11 @@ export default class customerProfileOffline extends LightningElement {
             this.preferredPayments = [];
             this.buLTV = 0;
             return;
+        }
+
+        this.showInStoreBadge = false;
+        if (this.badgeTimer) {
+            clearTimeout(this.badgeTimer);
         }
 
         this.isLoading = true;
@@ -95,6 +109,10 @@ export default class customerProfileOffline extends LightningElement {
                         engagement_score: engagement,
                         engagement_label: engagementLabel
                     };
+
+                    this.badgeTimer = setTimeout(() => {
+                        this.showInStoreBadge = true;
+                    }, 60000);
 
                     // LTV BU calcualtion
                     this.calculateBuLTV(message.recordId);
@@ -217,5 +235,39 @@ export default class customerProfileOffline extends LightningElement {
     // get hasFilteredSegments() {
     //     return (this.filteredSegmentNames?.length || 0) > 0;
     // }
+
+    get maskEmail() {
+        const email = this.record?.ssot__EmailAddress__c;
+
+        // 2. Cek apakah email ada dan mengandung karakter '@'
+        if (email && email.includes('@')) {
+            const [user, domain] = email.split("@");
+            
+            // 3. Logika masking: jika user id hanya 1-2 karakter, sesuaikan tampilannya
+            const visiblePart = user.length > 2 ? user.substring(0, 2) : user.substring(0, 1);
+            return `${visiblePart}******@${domain}`;
+        }
+
+        // 4. Kembalikan string kosong atau placeholder jika tidak ada data
+        return '';
+    }
+
+    get maskPhone() {
+        const phone = this.record?.phone_number; // Pastikan nama field sesuai mapping Anda
+
+        if (phone) {
+            // Menghapus spasi atau karakter non-angka agar konsisten
+            const cleaned = phone.toString().replace(/\D/g, ''); 
+            
+            // Ambil 4 digit terakhir
+            const lastFour = cleaned.slice(-4);
+            
+            // Tampilkan format: ********5678
+            return `********${lastFour}`;
+        }
+        return '';
+    }
+
+
 
 }

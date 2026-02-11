@@ -66,6 +66,86 @@
     padding-bottom: 1.5rem;
 }
 
+/* Container utama */
+.in-store-container {
+    font-family: "Salesforce Sans", Arial, sans-serif;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    animation: fadeIn 0.5s ease-in-out;
+    border-radius: 10px;
+    background: #3EB489;
+    color: white;
+    padding: 8px 12px;
+    width: 170px; 
+    min-width: 170px;
+    box-shadow: 0 4px 12px rgba(62, 180, 137, 0.2);
+    border: none;
+}
+
+/* Badge Style (IN STORE) */
+.in-store-badge {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 0.77rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+/* Bulatan Indikator */
+.record-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    animation: blinker 0.6s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+
+/* Teks Lokasi */
+.store-location-text {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: help;
+    width: 100%;
+}
+
+.truncate-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Animasi */
+@keyframes blinker {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0.3; transform: scale(0.9); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(0); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 540px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .in-store-container {
+        margin-left: 0;
+        align-items: flex-start;
+        text-align: left;
+        margin-top: 10px;
+    }
+}
+
 .profile-name {
     font-size: 1.3rem;
     font-weight: bold;

@@ -169,4 +169,6 @@ export default class CustomerProductListOffline extends LightningElement {
     closeAllDataModal() {
         this.isAllDataModalOpen = false;
     }
+
+    
 }

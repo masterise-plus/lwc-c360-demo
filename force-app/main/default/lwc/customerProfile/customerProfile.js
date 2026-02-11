@@ -218,4 +218,36 @@ export default class CustomerProfile extends LightningElement {
         return (this.filteredSegmentNames?.length || 0) > 0;
     }
 
+    get maskEmail() {
+        const email = this.record?.ssot__EmailAddress__c;
+
+        // 2. Cek apakah email ada dan mengandung karakter '@'
+        if (email && email.includes('@')) {
+            const [user, domain] = email.split("@");
+            
+            // 3. Logika masking: jika user id hanya 1-2 karakter, sesuaikan tampilannya
+            const visiblePart = user.length > 2 ? user.substring(0, 2) : user.substring(0, 1);
+            return `${visiblePart}******@${domain}`;
+        }
+
+        // 4. Kembalikan string kosong atau placeholder jika tidak ada data
+        return '';
+    }
+
+    get maskPhone() {
+        const phone = this.record?.phone_number; // Pastikan nama field sesuai mapping Anda
+
+        if (phone) {
+            // Menghapus spasi atau karakter non-angka agar konsisten
+            const cleaned = phone.toString().replace(/\D/g, ''); 
+            
+            // Ambil 4 digit terakhir
+            const lastFour = cleaned.slice(-4);
+            
+            // Tampilkan format: ********5678
+            return `********${lastFour}`;
+        }
+        return '';
+    }
+
 }

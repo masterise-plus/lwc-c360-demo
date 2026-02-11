@@ -3,6 +3,7 @@
     <lightning-card>
         <template if:true={record}>
             <div class="profile-container">
+
                 <!-- Header -->
                 <div class="profile-header">
                     <div class="profile-photo profile-photo--lg">
@@ -21,6 +22,20 @@
                         <div class="profile-name">{record.FullName}</div>
                         <div class="profile-city">{record.City__c}</div>
                     </div>
+
+                    <template if:true={showInStoreBadge}>
+                        <div class="in-store-container slds-col_bump-left">
+                            <div class="in-store-badge">
+                                <div class="record-indicator slds-m-right_x-small"></div>
+                                <span>IN STORE</span>
+                            </div>
+                            <div class="store-location-text truncate-text" title="Erafone Megastore Central Park">
+                                Erafone Megastore Central Park
+                            </div>
+                        </div>
+                    </template>
+
+                    
                 </div>
 
 
@@ -35,13 +50,13 @@
                     <div class="info-item">
                         <lightning-icon class="white-icon" icon-name="utility:email" size="x-small"></lightning-icon>
                         <span class="label">Email Address</span>
-                        <span class="value">{record.ssot__EmailAddress__c}</span>
+                        <span class="value">{maskEmail}</span>
                     </div>
 
                     <div class="info-item">
                         <lightning-icon class="white-icon" icon-name="utility:call" size="x-small"></lightning-icon>
                         <span class="label">Phone Number</span>
-                        <span class="value">{record.phone_number}</span>
+                        <span class="value">{maskPhone}</span>
                     </div>
 
                     <div class="info-item">
