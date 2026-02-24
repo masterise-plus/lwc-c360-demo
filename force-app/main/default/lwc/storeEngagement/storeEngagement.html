@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="Store Engagement" icon-name="standard:store">
+        <!-- Loading State -->
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+        <!-- Engagement Metrics - Show only when data is available -->
+        <template if:true={hasEngagementData}>
+            <div class="metrics-grid">
+                <!-- Average Duration -->
+                <div class="metric-item">
+                    <div class="metric-label">Average Stay Duration</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:clock" size="xx-small" class="metric-icon clock-icon"></lightning-icon>
+                        <span class="metric-number">{averageDuration}</span>
+                        <span class="metric-unit">SEC</span>
+                    </div>
+                </div>
+
+                <!-- Last Store Visit -->
+                <div class="metric-item">
+                    <div class="metric-label">Last store visit</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:event" size="xx-small" class="metric-icon calendar-icon"></lightning-icon>
+                        <span class="metric-number">{lastStoreVisit}</span>
+                    </div>
+                </div>
+
+                <!-- Duration of Last Visit -->
+                <!-- <div class="metric-item metric-full-width">
+                    <div class="metric-label">Duration of last visit, sec</div>
+                    <div class="metric-value">
+                        <lightning-icon icon-name="utility:clock" size="xx-small" class="metric-icon clock-icon"></lightning-icon>
+                        <span class="metric-number">{lastVisitDuration}</span>
+                    </div>
+                </div> -->
+            </div>
+        </template>
+
+        <!-- Empty State - Show when no record is selected -->
+        <template if:false={hasEngagementData}>
+            <template if:false={isLoading}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                    <p>No engagement data available.</p>
+                </div>
+            </template>
+        </template>
+    </lightning-card>
+</template>
