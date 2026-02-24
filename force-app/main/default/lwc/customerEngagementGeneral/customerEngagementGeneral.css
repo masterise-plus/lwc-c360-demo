@@ -1,0 +1,92 @@
+.timeline {
+    position: relative;
+    margin-left: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1.5rem;
+    /* border-left: 2px solid #dcdcdc; */
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    position: relative;
+    /* border-left: 2px solid #dcdcdc; */
+}
+
+.icon {
+    margin-right: 0.75rem;
+    margin-top: -0.1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.border-line{
+border-left: 2px solid #dcdcdc;
+padding-left:20px;
+}
+
+.title {
+    font-weight: 600;
+    color: #032d60;
+    /* border-left: 2px solid #dcdcdc; */
+}
+
+.desc {
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.label {
+    font-weight: 600;
+    color: #032d60;
+    margin-right: 0.25rem;
+}
+
+.badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.bu-badge {
+    background-color: #e8f4ff;
+    color: #032d60;
+    border: 1px solid #b6d8ff;
+}
+
+.time-container{
+    display: flex;
+    padding-top: 1rem;
+    align-items: center;
+    gap: 0.3rem
+}
+
+.time {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.spinner-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+/* optional: modal container rapi */
+.slds-modal__container {
+  max-width: 48rem;
+  width: 90%;
+}

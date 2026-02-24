@@ -3,6 +3,22 @@
     min-width: 10rem;
 }
 
+
+.datatable-wrapper.table_luar{
+    margin: 0 1rem; /* samakan margin kiri-kanan dengan header default */
+}
+
+.modal-container-1000 {
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container-1000 .slds-modal__content {
+  flex: 1;            /* bikin content ngisi ruang */
+  overflow: auto;     /* biar datatable bisa scroll kalau kepanjangan */
+}
+
 /* wrapper di slot actions jadi flex supaya sejajar vertikal dengan title */
 .actions-slot {
     display: flex;
@@ -27,8 +43,4 @@
 /* (opsional) jika header punya icon/extra, sesuaikan padding */
 :host .slds-card__header .slds-media__body {
     min-width: 0; /* supaya ellipsis bekerja */
-}
-
-.datatable-wrapper {
-    margin: 0 1rem; /* samakan margin kiri-kanan dengan header default */
 }

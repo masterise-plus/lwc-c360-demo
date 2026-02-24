@@ -13,3 +13,8 @@ canvas {
     width: 100% !important;
     height: auto !important;
 }
+
+.chart-wrapper{
+    height: 200px;
+    padding: 1rem 2rem;
+}

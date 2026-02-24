@@ -1,0 +1,91 @@
+<template>
+    <lightning-card title="Search Customer" icon-name="standard:search">
+        <div class="search-card-container">
+
+            <!-- Search bar dengan semua field dalam 1 baris -->
+            <div class="search-bar">
+
+                <!-- Search Field dropdown -->
+                <div class="field-item">
+                    <lightning-combobox
+                        label="Field"
+                        value={searchField}
+                        options={searchOptions}
+                        onchange={handleFieldChange}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Keyword input + suggestion box -->
+                <div class="field-item keyword-container">
+                    <lightning-input
+                        type="text"
+                        label="Keyword"
+                        value={searchKey}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+
+                    <!-- Dropdown suggestion -->
+                    <template if:true={showSuggestions}>
+                        <div class="suggestion-box slds-box slds-m-top_xx-small">
+                            <template if:true={suggestions.length}>
+                                <template for:each={suggestions} for:item="s">
+                                    <div
+                                        key={s.value}
+                                        class="suggestion-item"
+                                        data-value={s.value}
+                                        onclick={handleSuggestionClick}>
+                                        {s.label}
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={suggestions.length}>
+                                <div class="suggestion-item disabled">No suggestions found</div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Search button, hanya muncul saat searchField = Id -->
+                <template if:true={isSearchById}>
+                    <div class="field-item button-container">
+                        <lightning-button
+                            label="Search"
+                            variant="brand"
+                            onclick={handleSearchClick}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </div>
+                </template>
+
+            </div>
+
+            <!-- Logo di sisi kanan -->
+            <!-- <div class="logo-wrapper">
+                <div class="logo">
+                    <img src="https://demo04-logo-erafone.edgeone.app/erafone.png" alt="Erafone" />
+                </div>
+            </div> -->
+
+            <!-- Spinner -->
+            <template if:true={isLoading}>
+                <div class="spinner-overlay">
+                    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- No Results -->
+            <template if:true={noResults}>
+                <p class="slds-text-body_small slds-m-top_medium slds-text-align_center">
+                    No records found.
+                </p>
+            </template>
+
+            <!-- Error -->
+            <template if:true={error}>
+                <div class="error slds-m-top_medium">
+                    ⚠️ {error}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -3,7 +3,7 @@ import { subscribe, MessageContext } from 'lightning/messageService';
 import RECORD_SELECTED_CHANNEL from '@salesforce/messageChannel/UnifiedIndividualSelected__c';
 import getCustomerEngagement from '@salesforce/apex/Customer360Controller.getCustomerEngagement';
 
-export default class CustomerEngagement extends LightningElement {
+export default class CustomerEngagementGeneral extends LightningElement {
     @wire(MessageContext) messageContext;
     subscription;
 
@@ -21,13 +21,13 @@ export default class CustomerEngagement extends LightningElement {
     // Filter Default
     @track filters = {
         eventType: 'ALL',
-        bu: 'iBox', 
+        bu: 'ALL', 
         keyword: ''
     };
 
     @track draftFilters = {
         eventType: 'ALL',
-        bu: 'iBox',
+        bu: 'ALL',
         keyword: ''
     };
 
@@ -49,7 +49,7 @@ export default class CustomerEngagement extends LightningElement {
     resetFiltersToDefault() {
         const defaultFilters = {
             eventType: 'ALL',
-            bu: 'iBox',
+            bu: 'ALL',
             keyword: ''
         };
 
@@ -167,7 +167,7 @@ export default class CustomerEngagement extends LightningElement {
     }
 
     clearFilters() {
-        this.filters = { eventType: 'ALL', bu: 'iBox', keyword: '' };
+        this.filters = { eventType: 'ALL', bu: 'ALL', keyword: '' };
         this.isFilterModalOpen = false;
     }
 

@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import chartjs from '@salesforce/resourceUrl/ChartJs';
 import { subscribe, MessageContext } from 'lightning/messageService';
@@ -7,7 +7,11 @@ import getTop3BrandByQty from '@salesforce/apex/Customer360Controller.getTop3Bra
 
 export default class BrandChart extends LightningElement {
     @track unifiedId;
-    @track chart;
+    @track data;
+    @track isLoading = false;
+    @track error;
+
+    chart = null; 
     chartJsLoaded = false;
     subscription = null;
 
@@ -30,7 +34,9 @@ export default class BrandChart extends LightningElement {
     handleRecordSelected(message) {
         if (message?.recordId) {
             this.unifiedId = message.recordId;
-            this.fetchBrandData();
+            if (this.chartJsLoaded) {
+                this.fetchBrandData();
+            }
         }
     }
 
@@ -41,32 +47,48 @@ export default class BrandChart extends LightningElement {
                 this.chartJsLoaded = true;
                 if (this.unifiedId) this.fetchBrandData();
             })
-            .catch(err => console.error('ChartJS load error', err));
+            .catch(err => {
+                this.error = 'Failed to load ChartJS';
+                console.error(err);
+            });
     }
 
     fetchBrandData() {
-        if (!this.chartJsLoaded || !this.unifiedId) return;
+        if (!this.unifiedId) return;
+
+        this.isLoading = true;
+        this.error = null;
 
         getTop3BrandByQty({ unifiedId: this.unifiedId })
-            .then(data => {
-                if (data && data.length > 0) {
-                    this.renderChart(data);
-                } else {
-                    this.clearChart('No data available');
+            .then(result => {
+                this.data = result;
+                if (result && result.length > 0) {
+                    // Jeda satu tick agar template merender canvas (seperti di CategoryChart)
+                    setTimeout(() => {
+                        this.renderChart(result);
+                    }, 50);
                 }
             })
-            .catch(error => {
-                console.error('Error fetching brand data', error);
-                this.clearChart('Error loading data');
+            .catch((err) => {
+                console.error('Error:', err);
+                this.error = err.body?.message || err.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
     }
 
     renderChart(data) {
-        const ctx = this.template.querySelector('canvas').getContext('2d');
-        if (this.chart) {
-            this.chart.destroy();
+        const canvas = this.template.querySelector('canvas');
+        if (!canvas) return;
+
+        // BERSIHKAN CHART LAMA (Logic disamakan)
+        const existingChart = window.Chart.getChart(canvas);
+        if (existingChart) {
+            existingChart.destroy();
         }
 
+        const ctx = canvas.getContext('2d');
         const labels = data.map(d => d.Brand || 'Unknown');
         const values = data.map(d => d.Qty || 0);
 
@@ -77,51 +99,50 @@ export default class BrandChart extends LightningElement {
                 datasets: [{
                     label: 'Quantity',
                     data: values,
-                    backgroundColor: ['#F6BD60', '#84A59D', '#F28482'],
-                    borderRadius: 6,
-                    barThickness: 30,
-                    maxBarThickness: 30
+                    backgroundColor: ['#F6BD60', '#84A59D', '#F28482'], // Warna tetap Brand
+                    borderRadius: 3,
+                    barThickness: 25,
+                    maxBarThickness: 25
                 }]
             },
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: false, // biar fleksibel mengikuti tinggi container
+                maintainAspectRatio: false,
                 animation: {
-                    duration: 1000,
+                    duration: 1200,
                     easing: 'easeOutQuart'
+                },
+                animations: {
+                    x: {
+                        from: 0,
+                        duration: 1200
+                    }
                 },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        enabled: true,
-                        backgroundColor: '#333',
                         titleFont: { size: 13 },
                         bodyFont: { size: 12 }
                     }
                 },
                 scales: {
-                    x: {
-                        beginAtZero: true,
+                    x: { 
+                        beginAtZero: true, 
                         grid: { display: false },
-                        ticks: { stepSize: 1 }
+                        suggestedMax: Math.max(...values) + 1 
                     },
-                    y: {
-                        grid: { display: false },
-                        ticks: { font: { size: 13 } }
+                    y: { 
+                        grid: { display: false } 
                     }
                 }
             }
         });
     }
 
-    clearChart(message) {
-        const container = this.template.querySelector('.chart-container');
-        container.style.height = 'auto'; // biar otomatis collapse kalau tidak ada data
-        const ctx = this.template.querySelector('canvas').getContext('2d');
-        if (this.chart) this.chart.destroy();
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.font = '14px Arial';
-        ctx.fillText(message, 10, 20);
+    disconnectedCallback() {
+        if (this.chart) {
+            this.chart.destroy();
+        }
     }
 }

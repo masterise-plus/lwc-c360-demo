@@ -11,24 +11,29 @@ export default class ActivityList extends LightningElement {
     @track error;
     @track isLoading = false;
 
-    // === Pagination state ===
-    @track displayLimit = 5;
-    @track showAll = false;
+    @track isFieldModalOpen = false;
+    @track isAllDataModalOpen = false;
 
     // === Field selection state ===
     @track selectedFields = [
         'Transaction_Date',
-        'Sales_Order_Id',
         'Store_Name',
         'ssot__GrandTotalAmount__c'
     ];
     @track tempSelectedFields = [];
-    @track isFieldModalOpen = false;
 
-    // === Sorting state ===
-    defaultSortDirection = 'desc';
+    /* =======================
+        Preview table
+    ======================= */
+    displayLimit = 5;
     sortDirection = 'desc';
     sortedBy = 'Transaction_Date';
+
+    /* =======================
+        Modal pagination
+    ======================= */
+    modalPageSize = 15;
+    @track modalCurrentPage = 1;
 
     // === Available fields ===
     availableFields = [
@@ -89,18 +94,13 @@ export default class ActivityList extends LightningElement {
                     Transaction_Date: r.Transaction_Date ? new Date(r.Transaction_Date) : null
                 }));
 
-                // Sort descending by Transaction_Date
+                // Default sort descending
                 mapped.sort((a, b) => {
-                    const dateA = a.Transaction_Date ? new Date(a.Transaction_Date) : 0;
-                    const dateB = b.Transaction_Date ? new Date(b.Transaction_Date) : 0;
-                    return dateB - dateA;
+                    return (b.Transaction_Date || 0) - (a.Transaction_Date || 0);
                 });
 
                 this.salesorder = mapped;
-                this.sortedBy = 'Transaction_Date';
-                this.sortDirection = 'desc';
-                this.showAll = false;
-                this.displayLimit = 5;
+                this.modalCurrentPage = 1; // reset modal page
             })
             .catch((err) => {
                 this.error = err?.body?.message || err.message;
@@ -110,49 +110,40 @@ export default class ActivityList extends LightningElement {
             });
     }
 
-    // === Pagination ===
+    /* =======================
+        Preview helpers
+    ======================= */
     get visibleSalesOrder() {
-        return this.showAll
-            ? this.salesorder
-            : this.salesorder.slice(0, this.displayLimit);
+        return this.salesorder.slice(0, this.displayLimit);
     }
 
     get canShowMore() {
-        return this.salesorder.length > this.displayLimit && !this.showAll;
+        return this.salesorder.length > this.displayLimit;
     }
 
-    get canShowLess() {
-        return this.showAll;
-    }
-
-    handleShowMore() {
-        this.showAll = true;
-    }
-
-    handleShowLess() {
-        this.showAll = false;
-    }
-
-    // === Sorting ===
-    sortBy(field, reverse, primer) {
-        const key = primer ? (x) => primer(x[field]) : (x) => x[field];
-        return function (a, b) {
-            a = key(a);
-            b = key(b);
-            return reverse * ((a > b) - (b > a));
-        };
-    }
-
+    /* =======================
+        Sorting (shared)
+    ======================= */
     onHandleSort(event) {
-        const { fieldName: sortedBy, sortDirection } = event.detail;
-        const cloneData = [...this.salesorder];
-        cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
-        this.salesorder = cloneData;
+        const { fieldName, sortDirection } = event.detail;
+        this.sortedBy = fieldName;
         this.sortDirection = sortDirection;
-        this.sortedBy = sortedBy;
+
+        const cloneData = [...this.salesorder];
+        cloneData.sort((a, b) => {
+            const v1 = a[fieldName];
+            const v2 = b[fieldName];
+            return sortDirection === 'asc'
+                ? (v1 > v2 ? 1 : -1)
+                : (v1 < v2 ? 1 : -1);
+        });
+        this.salesorder = cloneData;
+        this.modalCurrentPage = 1; // reset page after sort
     }
 
-    // === Field Modal ===
+    /* =======================
+        Field selector
+    ======================= */
     openFieldSelector() {
         this.tempSelectedFields = [...this.selectedFields];
         this.isFieldModalOpen = true;
@@ -171,22 +162,65 @@ export default class ActivityList extends LightningElement {
         this.closeFieldModal();
     }
 
-    // === Columns ===
     get displayColumns() {
         return this.selectedFields.map((field) => {
-            const fieldMeta = this.availableFields.find((f) => f.value === field);
+            const meta = this.availableFields.find((f) => f.value === field);
             return {
-                label: fieldMeta?.label || field,
+                label: meta?.label || field,
                 fieldName: field,
-                type: fieldMeta?.type || 'text',
-                typeAttributes: fieldMeta?.typeAttributes,
+                type: meta?.type || 'text',
+                typeAttributes: meta?.typeAttributes,
                 sortable: true
             };
         });
     }
 
-    // === Helpers ===
+    /* =======================
+        Modal pagination logic
+    ======================= */
+    get modalTotalPages() {
+        return Math.ceil(this.salesorder.length / this.modalPageSize);
+    }
+
+    get modalPagedData() {
+        const start = (this.modalCurrentPage - 1) * this.modalPageSize;
+        const end = start + this.modalPageSize;
+        return this.salesorder.slice(start, end);
+    }
+
+    handleModalPrev() {
+        if (this.modalCurrentPage > 1) {
+            this.modalCurrentPage--;
+        }
+    }
+
+    handleModalNext() {
+        if (this.modalCurrentPage < this.modalTotalPages) {
+            this.modalCurrentPage++;
+        }
+    }
+
+    get canModalPrev() {
+        return this.modalCurrentPage === 1;
+    }
+
+    get canModalNext() {
+        return this.modalCurrentPage === this.modalTotalPages || this.modalTotalPages === 0;
+    }
+
+    /* =======================
+        Modal open / close
+    ======================= */
+    openAllDataModal() {
+        this.modalCurrentPage = 1;
+        this.isAllDataModalOpen = true;
+    }
+
+    closeAllDataModal() {
+        this.isAllDataModalOpen = false;
+    }
+
     get noData() {
-        return !this.isLoading && Array.isArray(this.salesorder) && this.salesorder.length === 0;
+        return !this.isLoading && this.salesorder.length === 0;
     }
 }
