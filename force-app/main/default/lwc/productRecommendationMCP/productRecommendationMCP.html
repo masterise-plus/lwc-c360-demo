@@ -29,13 +29,13 @@
                                     <div class="product-info">
                                         <p class="product-name">{product.name}</p>
                                         
+                                        <span class="current-price">{product.currentPrice}</span>
                                         <div class="price-row">
                                             <template if:true={product.hasDiscount}>
                                                 <p class="old-price">{product.originalPrice}</p>
                                                 <span class="discount-badge">{product.discount}</span>
                                             </template>
                                         </div>
-                                        <span class="current-price">{product.currentPrice}</span>
                                     </div>
                                 </div>
                             </template>
