@@ -49,9 +49,9 @@ export default class CustomerProfile extends LightningElement {
                     ageRaw = parseFloat(ageRaw);
                     ageRaw = isNaN(ageRaw) ? 0 : parseFloat(ageRaw.toFixed(0));
 
-                    let point_balance = result.ssot__PointsBalanceNumber__c || 0;
-                    point_balance = parseFloat(point_balance);
-                    point_balance = isNaN(point_balance) ? 0 : parseFloat(point_balance.toFixed(2));
+                    let format_point_balance = result.point_balance || 0
+                    format_point_balance = parseFloat(format_point_balance);
+                    format_point_balance = isNaN(format_point_balance) ? 0 : parseFloat(format_point_balance.toFixed(0));
 
                     let formatedAge = ageRaw.toLocaleString('id-ID', {
                         minimumFractionDigits: 0,
@@ -63,9 +63,9 @@ export default class CustomerProfile extends LightningElement {
                         maximumFractionDigits: 2
                     });
 
-                    let formattedPointBalance = point_balance.toLocaleString('id-ID', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                    let formattedPointBalance = format_point_balance.toLocaleString('id-ID', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
                     });
 
                     let engagement = parseFloat(result.engagement_score || 0);
@@ -89,7 +89,7 @@ export default class CustomerProfile extends LightningElement {
                     this.record = {
                         ...result,
                         LTV: formattedLTV,
-                        ssot__PointsBalanceNumber__c: formattedPointBalance,
+                        point_balance: formattedPointBalance,
                         formatAge: formatedAge,
                         ssot__CreatedDate__c: formattedCreatedDate,
                         engagement_score: engagement,

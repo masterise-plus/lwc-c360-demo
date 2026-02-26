@@ -5,6 +5,11 @@ import getUnifiedIndividualById from '@salesforce/apex/Customer360Controller.get
 import getPreferredPaymentPerBU from '@salesforce/apex/Customer360Controller.getPreferredPaymentPerBU';
 import getSalesOrderItemByUnifiedId from '@salesforce/apex/Customer360Controller.getSalesOrderItemByUnifiedId';
 
+// --- PENGATURAN WAKTU BADGE (Dalam Milidetik) ---
+const DELAY_MUNCUL = 5000;    // Waktu tunggu sebelum badge muncul (5 detik)
+const DURASI_TAMPIL = 30000;  // Lama badge tampil sebelum memudar (30 detik untuk testing, sesuaikan jadi 300000 untuk 5 menit)
+// ------------------------------------------------
+
 export default class customerProfileOffline extends LightningElement {
     @wire(MessageContext) messageContext;
 
@@ -14,8 +19,10 @@ export default class customerProfileOffline extends LightningElement {
     @track isLoading = false;
     @track error;
     @track showInStoreBadge = false; 
+    @track isFadingOut = false; // Kontrol class animasi
+
     badgeTimer;
-    
+    hideBadgeTimer;
 
     connectedCallback() {
         this.subscription = subscribe(
@@ -26,9 +33,13 @@ export default class customerProfileOffline extends LightningElement {
     }
 
     disconnectedCallback() {
-        if (this.badgeTimer) {
-            clearTimeout(this.badgeTimer);
-        }
+        this.clearAllTimers();
+    }
+
+    // Helper untuk membersihkan timer agar kode lebih rapi
+    clearAllTimers() {
+        if (this.badgeTimer) clearTimeout(this.badgeTimer);
+        if (this.hideBadgeTimer) clearTimeout(this.hideBadgeTimer);
     }
 
     handleRecordSelection(message) {
@@ -40,10 +51,10 @@ export default class customerProfileOffline extends LightningElement {
             return;
         }
 
+        // Reset semua state terkait badge
+        this.clearAllTimers();
         this.showInStoreBadge = false;
-        if (this.badgeTimer) {
-            clearTimeout(this.badgeTimer);
-        }
+        this.isFadingOut = false;
 
         this.isLoading = true;
         this.error = undefined;
@@ -63,9 +74,9 @@ export default class customerProfileOffline extends LightningElement {
                     ageRaw = parseFloat(ageRaw);
                     ageRaw = isNaN(ageRaw) ? 0 : parseFloat(ageRaw.toFixed(0));
 
-                    let point_balance = result.ssot__PointsBalanceNumber__c || 0;
-                    point_balance = parseFloat(point_balance);
-                    point_balance = isNaN(point_balance) ? 0 : parseFloat(point_balance.toFixed(2));
+                    let format_point_balance = result.point_balance || 0
+                    format_point_balance = parseFloat(format_point_balance);
+                    format_point_balance = isNaN(format_point_balance) ? 0 : parseFloat(format_point_balance.toFixed(0));
 
                     let formatedAge = ageRaw.toLocaleString('id-ID', {
                         minimumFractionDigits: 0,
@@ -77,9 +88,9 @@ export default class customerProfileOffline extends LightningElement {
                         maximumFractionDigits: 2
                     });
 
-                    let formattedPointBalance = point_balance.toLocaleString('id-ID', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                    let formattedPointBalance = format_point_balance.toLocaleString('id-ID', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
                     });
 
                     let engagement = parseFloat(result.engagement_score || 0);
@@ -103,16 +114,32 @@ export default class customerProfileOffline extends LightningElement {
                     this.record = {
                         ...result,
                         LTV: formattedLTV,
-                        ssot__PointsBalanceNumber__c: formattedPointBalance,
+                        point_balance: formattedPointBalance,
                         formatAge: formatedAge,
                         ssot__CreatedDate__c: formattedCreatedDate,
                         engagement_score: engagement,
                         engagement_label: engagementLabel
                     };
 
+                    // --- LOGIKA TIMER UNTUK BADGE ---
+                    // 1. Munculkan badge setelah DELAY_MUNCUL
                     this.badgeTimer = setTimeout(() => {
                         this.showInStoreBadge = true;
-                    }, 60000);
+                    }, DELAY_MUNCUL);
+
+                    // 2. Mulai proses Fade Out setelah (DELAY_MUNCUL + DURASI_TAMPIL)
+                    this.hideBadgeTimer = setTimeout(() => {
+                        // Tambahkan class .fade-out untuk memulai animasi
+                        this.isFadingOut = true;
+
+                        // Beri waktu 500ms agar animasi CSS selesai, baru hilangkan div-nya
+                        setTimeout(() => {
+                            this.showInStoreBadge = false;
+                            this.isFadingOut = false; // Reset state
+                        }, 500);
+                        
+                    }, DELAY_MUNCUL + DURASI_TAMPIL);
+                    // --------------------------------
 
                     // LTV BU calcualtion
                     this.calculateBuLTV(message.recordId);
@@ -146,29 +173,18 @@ export default class customerProfileOffline extends LightningElement {
             });
     }
 
-    // --- GAUGE CONFIGURATIONS ---
-    // get gaugeColor() {
-    //     const score = this.record?.engagement_score || 0;
-    //     if (score >= 75) return '#3EB489'; // hijau
-    //     if (score >= 40) return '#F7B500'; // kuning
-    //     return '#D94F4F'; // merah
-    // }
-
-    // get gaugeStyle() {
-    //     const score = this.record?.engagement_score || 0;
-    //     const radius = 40;
-    //     const circumference = Math.PI * radius;
-    //     const filled = (score / 100) * circumference;
-    //     const empty = circumference - filled;
-    //     return `stroke-dasharray: ${circumference}; stroke-dashoffset: ${empty}; transform-origin: 50% 50%;`;
-    // }
+    get badgeContainerClass() {
+        // Jika isFadingOut true, CSS 'fade-out' akan ditambahkan
+        return this.isFadingOut 
+            ? 'in-store-container slds-col_bump-left fade-out' 
+            : 'in-store-container slds-col_bump-left';
+    }
 
     calculateBuLTV(unifiedId) {
         getSalesOrderItemByUnifiedId({ unifiedId })
             .then((result) => {
                 const rows = Array.isArray(result) ? result : [];
 
-                // Filter dan jumlahkan nilai (tetap angka)
                 const total = rows
                     .filter(item => item.Retail_Store === 'Erafone')
                     .reduce((acc, current) => {
@@ -176,7 +192,6 @@ export default class customerProfileOffline extends LightningElement {
                         return acc + amount;
                     }, 0);
 
-                // Simpan sebagai Number
                 this.buLTV = parseFloat(total.toFixed(2));
             })
             .catch((err) => {
@@ -194,80 +209,32 @@ export default class customerProfileOffline extends LightningElement {
     }
 
     get showHardcodedBadges() {
-        // Check if the current record ID matches the specific ID provided
         return this.record?.ssot__Id__c === 'cf72c1c1c94bd7c10cf2477cf1c0c70b';
     }
 
     get showHardcodedBadgesBudi() {
-        // Check if the current record ID matches the specific ID provided
         return this.record?.ssot__Id__c === '39eaa5575b9af05b47c5e7865c466298';
     }
-
-
-    // // Segment Tab
-    // @track activeTab = 'Er'; // Default first tab
-
-    // get tabOrder() {
-    //     return ['Er', 'Ef', 'JD', 'iB', 'PB', 'UA', 'AS', 'Others'];
-    // }
-
-    
-
-    // handleTabActive(event) {
-    //     // event.target.value berisi value tab yang aktif
-    //     this.activeTab = event.target.value;
-    // }
-
-    // get filteredSegmentNames() {
-    //     const list = this.record?.Segment_Display_Names || [];
-    //     const tag = this.activeTab; // "Er", "Ef", "JD", ...
-
-    //     // Tab Others: yang tidak punya tag [Er]/[Ef]/... (opsional)
-    //     if (tag === 'Others') {
-    //         const knownTags = ['Er', 'Ef', 'JD', 'iB', 'PB', 'UA', 'AS'];
-    //         return list.filter((name) => !knownTags.some(t => name?.includes(`[${t}]`)));
-    //     }
-
-    //     // Tab normal: hanya yang mengandung pattern `[Er]` dll
-    //     return list.filter((name) => name?.includes(`[${tag}]`));
-    // }
-
-    // get hasFilteredSegments() {
-    //     return (this.filteredSegmentNames?.length || 0) > 0;
-    // }
 
     get maskEmail() {
         const email = this.record?.ssot__EmailAddress__c;
 
-        // 2. Cek apakah email ada dan mengandung karakter '@'
         if (email && email.includes('@')) {
             const [user, domain] = email.split("@");
-            
-            // 3. Logika masking: jika user id hanya 1-2 karakter, sesuaikan tampilannya
             const visiblePart = user.length > 2 ? user.substring(0, 2) : user.substring(0, 1);
             return `${visiblePart}******@${domain}`;
         }
-
-        // 4. Kembalikan string kosong atau placeholder jika tidak ada data
         return '';
     }
 
     get maskPhone() {
-        const phone = this.record?.phone_number; // Pastikan nama field sesuai mapping Anda
+        const phone = this.record?.phone_number;
 
         if (phone) {
-            // Menghapus spasi atau karakter non-angka agar konsisten
             const cleaned = phone.toString().replace(/\D/g, ''); 
-            
-            // Ambil 4 digit terakhir
             const lastFour = cleaned.slice(-4);
-            
-            // Tampilkan format: ********5678
             return `********${lastFour}`;
         }
         return '';
     }
-
-
-
 }
