@@ -21,13 +21,13 @@ export default class CustomerEngagement extends LightningElement {
     // Filter Default
     @track filters = {
         eventType: 'ALL',
-        bu: 'iBox', 
+        bu: 'OCBC',
         keyword: ''
     };
 
     @track draftFilters = {
         eventType: 'ALL',
-        bu: 'iBox',
+        bu: 'OCBC',
         keyword: ''
     };
 
@@ -49,7 +49,7 @@ export default class CustomerEngagement extends LightningElement {
     resetFiltersToDefault() {
         const defaultFilters = {
             eventType: 'ALL',
-            bu: 'iBox',
+            bu: 'OCBC',
             keyword: ''
         };
 
@@ -105,8 +105,8 @@ export default class CustomerEngagement extends LightningElement {
         return this.engagements.filter(e => {
             const matchType = (eventType === 'ALL' || e.eventType === eventType);
             const matchBu = (bu === 'ALL' || e.businessunits === bu);
-            const matchKeyword = !kw || 
-                e.eventName.toLowerCase().includes(kw) || 
+            const matchKeyword = !kw ||
+                e.eventName.toLowerCase().includes(kw) ||
                 e.eventDescription.toLowerCase().includes(kw);
 
             return matchType && matchBu && matchKeyword;
@@ -130,21 +130,28 @@ export default class CustomerEngagement extends LightningElement {
             { label: 'Paris Baguette', value: 'Paris Baguette' },
             { label: 'Grand Lucky', value: 'Grand Lucky' },
             { label: 'JD Sports', value: 'JD Sports' },
-            { label: 'iBox', value: 'iBox' }
+            { label: 'iBox', value: 'iBox' },
+            { label: 'OCBC', value: 'OCBC' }
         ];
     }
 
     get eventTypeOptions() {
         return [
             { label: 'All', value: 'ALL' },
-            { label: 'Visit', value: 'VISIT' },
-            { label: 'Cart', value: 'CART' },
-            { label: 'Email Open', value: 'OPEN' },
-            { label: 'Email Click', value: 'CLICK' },
-            { label: 'Email', value: 'EMAIL' },
-            { label: 'Chat', value: 'CHAT' },
-            { label: 'Purchase', value: 'PURCHASE' },
-            { label: 'Location', value: 'LOCATION' },
+            { label: 'Add to Cart', value: 'Add to Cart' },
+            { label: 'Add to Wishlish', value: 'Add to Wishlish' },
+            { label: 'Click Email', value: 'Click Email' },
+            { label: 'Click Whatsapp Event', value: 'Click Whatsapp Event' },
+            { label: 'Home Page', value: 'Home Page' },
+            { label: 'Location Event', value: 'Location Event' },
+            { label: 'Login Page', value: 'Login Page' },
+            { label: 'Purchase', value: 'Purchase' },
+            { label: 'Read Whatsapp Event', value: 'Read Whatsapp Event' },
+            { label: 'Search', value: 'Search' },
+            { label: 'View Page', value: 'View Page' },
+            { label: 'Website Event', value: 'Website Event' },
+            { label: 'Website Visit', value: 'Website Visit' },
+            { label: 'Wishlist Page', value: 'Wishlist Page' },
             { label: 'Other', value: 'OTHER' }
         ];
 
@@ -167,7 +174,7 @@ export default class CustomerEngagement extends LightningElement {
     }
 
     clearFilters() {
-        this.filters = { eventType: 'ALL', bu: 'iBox', keyword: '' };
+        this.filters = { eventType: 'ALL', bu: 'OCBC', keyword: '' };
         this.isFilterModalOpen = false;
     }
 
@@ -182,19 +189,39 @@ export default class CustomerEngagement extends LightningElement {
 
     getEventType(name = '') {
         const n = name.toLowerCase();
-        if (n.includes('visit')) return 'VISIT';
-        if (n.includes('purchase')) return 'PURCHASE';
-        if (n.includes('location')) return 'LOCATION';
-        if (n.includes('email')) return 'EMAIL';
+        if (n.includes('add to cart')) return 'Add to Cart';
+        if (n.includes('add to wish')) return 'Add to Wishlish';
+        if (n.includes('click email')) return 'Click Email';
+        if (n.includes('click whatsapp')) return 'Click Whatsapp Event';
+        if (n.includes('home page')) return 'Home Page';
+        if (n.includes('location')) return 'Location Event';
+        if (n.includes('login')) return 'Login Page';
+        if (n.includes('purchase')) return 'Purchase';
+        if (n.includes('read whatsapp')) return 'Read Whatsapp Event';
+        if (n.includes('search')) return 'Search';
+        if (n.includes('view page')) return 'View Page';
+        if (n.includes('website event')) return 'Website Event';
+        if (n.includes('website visit')) return 'Website Visit';
+        if (n.includes('wishlist page')) return 'Wishlist Page';
         return 'OTHER';
     }
 
     getIconName(name = '') {
         const n = name.toLowerCase();
-        if (n.includes('visit')) return 'standard:channel_programs';
-        if (n.includes('location')) return 'standard:location';
-        if (n.includes('purchase')) return 'standard:orders';
-        if (n.includes('email')) return 'standard:email_chatter';
+        if (n.includes('add to cart')) return 'standard:webcart';
+        if (n.includes('add to wish')) return 'standard:favorite';
+        if (n.includes('click email')) return 'standard:email_chatter';
+        if (n.includes('click whatsapp')) return 'standard:whatsapp';
+        if (n.includes('home page')) return 'standard:home';
+        if (n.includes('location')) return 'standard:address';
+        if (n.includes('login')) return 'standard:portal';
+        if (n.includes('purchase')) return 'standard:checkout';
+        if (n.includes('read whatsapp')) return 'standard:whatsapp';
+        if (n.includes('search')) return 'standard:search';
+        if (n.includes('view page')) return 'standard:channel_programs';
+        if (n.includes('website event')) return 'standard:channel_programs';
+        if (n.includes('website visit')) return 'standard:channel_programs';
+        if (n.includes('wishlist page')) return 'standard:favorite';
         return 'standard:outcome_activity';
     }
 
