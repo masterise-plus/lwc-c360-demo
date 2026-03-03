@@ -1,0 +1,48 @@
+/* pastikan tombol tidak terlalu kecil */
+.header-select-button {
+    min-width: 10rem;
+}
+
+.modal-container-1000 {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-container-1000 .slds-modal__content {
+    flex: 1;
+    overflow: auto;
+}
+
+/* wrapper di slot actions jadi flex supaya sejajar vertikal dengan title */
+.actions-slot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* pastikan header card align items center */
+:host .slds-card__header {
+    align-items: center;
+}
+
+/* judul tidak break ke baris baru */
+:host .slds-card__header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 18rem);
+}
+
+:host .slds-card__header .slds-media__body {
+    min-width: 0;
+}
+
+.page-size-selector {
+    gap: 0.5rem;
+}
+
+.page-size-combo {
+    width: 5.5rem;
+}

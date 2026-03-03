@@ -1,0 +1,157 @@
+<template>
+    <lightning-card title="Engagement" icon-name="standard:outcome_activity">
+
+        <!-- Header Actions -->
+        <div slot="actions" class="actions-slot">
+            <lightning-button-icon icon-name="utility:filterList" alternative-text="Filter engagement"
+                title="Filter engagement" onclick={openFilterModal} variant="bare" disabled={isLoading}>
+            </lightning-button-icon>
+
+            <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh engagement"
+                title="Refresh engagement" onclick={handleRefresh} variant="bare" disabled={isLoading}>
+            </lightning-button-icon>
+
+            <lightning-button label="Select Fields" icon-name="utility:settings" onclick={openFieldSelector}
+                variant="neutral" disabled={isLoading}>
+            </lightning-button>
+        </div>
+
+        <!-- Body -->
+        <div class="slds-card__body slds-card__body_inner slds-is-relative">
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+            </template>
+
+            <!-- No Record Selected -->
+            <template if:false={currentRecordId}>
+                <p class="slds-text-body_small slds-m-around_medium slds-text-align_center slds-text-color_weak">
+                    Select a customer to view engagement data.
+                </p>
+            </template>
+
+            <template if:true={currentRecordId}>
+                <!-- No Data -->
+                <template if:true={noData}>
+                    <p class="slds-text-body_small slds-m-around_medium slds-text-align_center slds-text-color_weak">
+                        No engagement data found for this individual.
+                    </p>
+                </template>
+
+                <!-- Datatable -->
+                <template if:true={hasData}>
+                    <div class="slds-m-top_small">
+                        <lightning-datatable key-field="key" show-row-number-column hide-checkbox-column
+                            data={visibleEngagements} columns={displayColumns} sorted-direction={sortDirection}
+                            sorted-by={sortedBy} onsort={onHandleSort}>
+                        </lightning-datatable>
+                    </div>
+
+                    <div class="slds-m-top_small slds-align_absolute-center" if:true={canShowMore}>
+                        <lightning-button label="Show More" variant="neutral" onclick={openAllDataModal}>
+                        </lightning-button>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Error -->
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-m-around_medium">⚠️ {error}</div>
+            </template>
+        </div>
+    </lightning-card>
+
+    <!-- ═══════════ FILTER MODAL ═══════════ -->
+    <template if:true={isFilterModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Filter Engagement</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-combobox class="slds-m-top_small" name="bu" label="Business Unit" value={draftFilters.bu}
+                        options={buOptions} onchange={handleFilterChange}>
+                    </lightning-combobox>
+
+                    <lightning-combobox name="eventType" label="Event Type" value={draftFilters.eventType}
+                        options={eventTypeOptions} onchange={handleFilterChange}>
+                    </lightning-combobox>
+
+                    <lightning-input class="slds-m-top_small" type="text" name="keyword" label="Keyword"
+                        placeholder="Search event name/description..." value={draftFilters.keyword}
+                        onchange={handleFilterChange}>
+                    </lightning-input>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Clear" variant="neutral" onclick={clearFilters}></lightning-button>
+                    <lightning-button class="slds-m-left_small" label="Cancel" variant="neutral"
+                        onclick={closeFilterModal}></lightning-button>
+                    <lightning-button class="slds-m-left_small" label="Apply" variant="brand"
+                        onclick={applyFilters}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- ═══════════ FIELD SELECTOR MODAL ═══════════ -->
+    <template if:true={isFieldModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Select Display Fields</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-dual-listbox label="Visible Fields" source-label="Available" selected-label="Displayed"
+                        options={availableFields} value={tempSelectedFields} onchange={handleFieldChange}>
+                    </lightning-dual-listbox>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeFieldModal}></lightning-button>
+                    <lightning-button label="Apply" variant="brand" onclick={applyFieldSelection}
+                        class="slds-m-left_small"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- ═══════════ ALL DATA MODAL (PAGINATED) ═══════════ -->
+    <template if:true={isAllDataModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large">
+            <div class="slds-modal__container modal-container-1000">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">All Engagement</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-datatable key-field="key" show-row-number-column row-number-offset={modalRowNumberOffset}
+                        hide-checkbox-column data={modalPagedData} columns={displayColumns}
+                        sorted-direction={sortDirection} sorted-by={sortedBy} onsort={onHandleSort}>
+                    </lightning-datatable>
+                </div>
+                <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <lightning-button label="Previous" onclick={handleModalPrev}
+                            disabled={canModalPrev}></lightning-button>
+                        <span class="slds-m-horizontal_medium">Page {modalCurrentPage} of {modalTotalPages}</span>
+                        <lightning-button label="Next" onclick={handleModalNext}
+                            disabled={canModalNext}></lightning-button>
+                    </div>
+                    <div class="slds-grid slds-grid_vertical-align-center page-size-selector">
+                        <lightning-combobox label="Rows per page" value={currentPageSizeStr} options={pageSizeOptions}
+                            onchange={handlePageSizeChange} variant="label-hidden" dropdown-alignment="right"
+                            class="page-size-combo">
+                        </lightning-combobox>
+                        <lightning-button label="Close" variant="neutral" onclick={closeAllDataModal}
+                            class="slds-m-left_small"></lightning-button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>
