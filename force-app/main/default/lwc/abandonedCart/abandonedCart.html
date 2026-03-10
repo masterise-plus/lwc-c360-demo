@@ -1,0 +1,130 @@
+<template>
+    <lightning-card title="Abandoned Cart" icon-name="standard:webcart">
+
+        <!-- Loading overlay -->
+        <template if:true={isLoading}>
+            <div class="spinner-overlay">
+                <lightning-spinner alternative-text="Loading abandoned carts..."></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template if:true={error}>
+            <div class="error">⚠️ {error}</div>
+        </template>
+
+        <!-- Preview list -->
+        <template if:true={cartItems.length}>
+            <div class="list-wrap">
+                <template for:each={visibleProductCards} for:item="item">
+                    <div key={item._id} class="product-row">
+                        <div class="thumb">
+                            <template if:true={item._img}>
+                                <img src={item._img} alt={item._name} />
+                            </template>
+                            <template if:false={item._img}>
+                                <lightning-icon icon-name="standard:product" size="small"></lightning-icon>
+                            </template>
+                        </div>
+
+                        <div class="info">
+                            <div class="name">{item._name}</div>
+                            <div class="border-line">
+                                <div class="meta">
+                                    <lightning-icon icon-name="utility:event" size="xx-small"></lightning-icon>
+                                    <span class="meta-text">{item._date} · {item._daysAgo}</span>
+                                </div>
+
+                                <div class="meta">
+                                    <span class="qty-badge">Qty: {item._qty}</span>
+                                </div>
+
+                                <div class="price">{item._price}</div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Show More button -->
+                <template if:true={canShowMore}>
+                    <div class="show-more-wrap">
+                        <lightning-button label="Show More" variant="neutral" onclick={openAllDataModal}>
+                        </lightning-button>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- No Data -->
+        <template if:true={noData}>
+            <p class="slds-text-body_small slds-m-around_medium">
+                No abandoned cart found for this individual.
+            </p>
+        </template>
+
+        <!-- ===================== -->
+        <!-- Show All Data Modal -->
+        <!-- ===================== -->
+        <template if:true={isAllDataModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                class="slds-modal slds-fade-in-open slds-modal_large">
+                <div class="slds-modal__container">
+
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">All Abandoned Cart Items</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <template if:true={modalProductCards.length}>
+                            <div class="list-wrap modal-list">
+                                <template for:each={modalProductCards} for:item="item">
+                                    <div key={item._id} class="product-row">
+                                        <div class="thumb">
+                                            <template if:true={item._img}>
+                                                <img src={item._img} alt={item._name} />
+                                            </template>
+                                            <template if:false={item._img}>
+                                                <lightning-icon icon-name="standard:product"
+                                                    size="small"></lightning-icon>
+                                            </template>
+                                        </div>
+
+                                        <div class="info">
+                                            <div class="name">{item._name}</div>
+
+                                            <div class="border-line">
+                                                <div class="meta">
+                                                    <lightning-icon icon-name="utility:event"
+                                                        size="xx-small"></lightning-icon>
+                                                    <span class="meta-text">{item._date} · {item._daysAgo}</span>
+                                                </div>
+
+                                                <div class="meta">
+                                                    <span class="qty-badge">Qty: {item._qty}</span>
+                                                </div>
+
+                                                <div class="price">{item._price}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <template if:false={modalProductCards.length}>
+                            <p class="slds-text-body_small">No abandoned cart found.</p>
+                        </template>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" variant="neutral" onclick={closeAllDataModal}>
+                        </lightning-button>
+                    </footer>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </lightning-card>
+</template>
