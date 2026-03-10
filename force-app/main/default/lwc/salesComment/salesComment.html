@@ -1,0 +1,81 @@
+<template>
+    <lightning-card title="Sales Comments" icon-name="standard:feedback">
+
+        <!-- Comments List -->
+        <template if:true={hasComments}>
+            <div class="comments-container">
+                <template for:each={comments} for:item="comment">
+                    <div key={comment.id} class="comment-card">
+
+                        <!-- Comment Header -->
+                        <div class="comment-header">
+                            <div class="header-left">
+                                <div class="avatar" style={comment.avatarStyle}>
+                                    <span class="avatar-initials">{comment.initials}</span>
+                                </div>
+                                <div class="header-info">
+                                    <div class="name-row">
+                                        <span class="seller-name">{comment.sellerName}</span>
+                                        <span class="seller-id">{comment.sellerId}</span>
+                                    </div>
+                                    <span class="time-ago">{comment.commentDate} · {comment.timeAgo}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment Body -->
+                        <div class="comment-body">
+                            <p class="comment-text">{comment.commentText}</p>
+                        </div>
+
+                        <!-- Comment Footer -->
+                        <div class="comment-footer">
+                            <template if:true={comment.sellerType}>
+                                <div class="badge-row">
+                                    <span class="seller-badge">
+                                        <lightning-icon icon-name="utility:store" size="xx-small"
+                                            alternative-text="Store" class="badge-icon">
+                                        </lightning-icon>
+                                        {comment.sellerType}
+                                    </span>
+                                </div>
+                            </template>
+
+                            <template if:true={comment.storeName}>
+                                <div class="store-info">
+                                    <lightning-icon icon-name="utility:location" size="xx-small"
+                                        alternative-text="Location" class="store-icon">
+                                    </lightning-icon>
+                                    <span class="store-text">{comment.storeName}</span>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Loading State -->
+        <template if:true={isLoading}>
+            <div class="slds-align_absolute-center slds-p-vertical_medium">
+                <lightning-spinner alternative-text="Loading sales comments..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error State -->
+        <template if:true={error}>
+            <div class="error slds-p-around_medium">
+                ⚠️ {error}
+            </div>
+        </template>
+
+        <!-- No Data State -->
+        <template if:true={hasNoData}>
+            <p class="slds-text-body_small slds-p-around_medium slds-text-align_center">
+                Select a customer to view sales comments.
+            </p>
+        </template>
+
+    </lightning-card>
+</template>
