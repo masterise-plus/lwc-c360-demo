@@ -6,12 +6,12 @@ import getPreferredPaymentPerBU from '@salesforce/apex/Customer360Controller.get
 import getSalesOrderItemByUnifiedId from '@salesforce/apex/Customer360Controller.getSalesOrderItemByUnifiedId';
 
 // --- PENGATURAN WAKTU BADGE (Dalam Milidetik) ---
-const DELAY_MUNCUL = 5000;    // Waktu tunggu sebelum badge muncul (5 detik)
-const DURASI_TAMPIL = 30000;  // Lama badge tampil sebelum memudar (30 detik untuk testing, sesuaikan jadi 300000 untuk 5 menit)
+const DELAY_MUNCUL = 60000;    // Waktu tunggu sebelum badge muncul (1 menit)
+const DURASI_TAMPIL = 300000;  // Lama badge tampil sebelum memudar (5 menit)
 // ------------------------------------------------
 
 export default class customerProfileOffline extends LightningElement {
-    @wire(MessageContext) messageContext;
+    @wire(MessageContext) messageContext; 
 
     subscription;
     @track record;
