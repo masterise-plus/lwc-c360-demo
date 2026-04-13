@@ -1,0 +1,127 @@
+.list-wrap { 
+  padding: 10px 14px; 
+}
+
+.store-row {
+    display: flex; 
+    gap: 12px; 
+    align-items: flex-start; 
+    padding: 12px;
+    border-radius: 12px; 
+    border: 1px solid #e5e7eb; 
+    background: #fff;
+    margin-bottom: 10px; 
+    transition: box-shadow 0.2s;
+}
+
+.store-row:hover { 
+  box-shadow: 0 2px 8px rgba(3, 45, 96, 0.12); 
+}
+
+.rank {
+    width: 36px; 
+    height: 36px;
+    border-radius: 50%; 
+    background: #e5e7eb;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    flex: 0 0 auto;
+}
+.rank-1 { 
+  background: linear-gradient(135deg, #3EB489, #2d9a74); 
+  box-shadow: 0 2px 6px rgba(62, 180, 137, 0.4); 
+}
+
+.rank-1 .rank-label { 
+  color: #fff; 
+  font-weight: 700; 
+}
+
+.rank-label { 
+  font-size: 0.8rem; 
+  font-weight: 600; 
+  color: #6b7280; 
+}
+
+.store-name { 
+  font-weight: 600; 
+  font-size: 0.9rem; 
+  color: #032d60; 
+}
+
+.top-badge { 
+  background: #3EB489; 
+  color: #fff; 
+  padding: 1px 8px; 
+  border-radius: 10px; 
+  font-size: 0.7rem; 
+}
+
+.store-details { 
+  border-left: 2px solid #dcdcdc; 
+  padding-left: 14px; 
+  margin-top: 5px; 
+}
+
+.detail-row { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 6px; 
+  color: #6b7280; 
+  font-size: 0.8rem; 
+  margin-bottom: 4px; 
+}
+
+.detail-meta { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 6px; 
+  margin-top: 8px; 
+}
+
+.distance-badge { 
+  background: #dbeafe; 
+  color: #1e40af; 
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  font-size: 0.72rem; 
+}
+
+.rating-badge { 
+  background: #fef3c7; 
+  color: #92400e; 
+  padding: 2px 8px;
+   border-radius: 4px; 
+  font-size: 0.72rem; 
+}
+
+.type-badge { 
+  background: #e0e7ff; 
+  color: #3730a3; 
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  font-size: 0.72rem; 
+}
+
+.empty-state {
+  text-align: center; 
+  color: #9ca3af; 
+  padding: 20px; 
+  border: 2px dashed #e5e7eb; 
+  border-radius: 12px; 
+}
+
+.empty-msg {
+    text-align: center;
+    color: #86868b;
+    padding: 30px 20px;
+    font-size: 0.9rem;
+}
+
+.error-state {
+    color: #ea001e;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}

@@ -1,0 +1,63 @@
+<template>
+    <lightning-card title="Store Recommendation" icon-name="standard:location">
+        <div class="list-wrap">
+            
+            <template if:true={isCustomerSelected}>
+                
+                <template if:true={isInvalidJson}>
+                    <div class="error-state">
+                        <p>Format JSON pada Component Settings tidak valid.</p>
+                    </div>
+                </template>
+
+                <template if:false={isInvalidJson}>
+                    <template if:true={hasStores}>
+                        <template for:each={displayStores} for:item="store">
+                            <div key={store.id} class="store-row">
+                                <div class={store.rankClass}>
+                                    <span class="rank-label">{store.rankLabel}</span>
+                                </div>
+                                <div class="store-info">
+                                    <div class="store-header">
+                                        <div class="store-name">{store.name}</div>
+                                        <template if:true={store.isTop}>
+                                            <span class="top-badge">Nearest</span>
+                                        </template>
+                                    </div>
+                                    <div class="store-details">
+                                        <div class="detail-row">
+                                            <lightning-icon icon-name="utility:location" size="xx-small"></lightning-icon>
+                                            <span class="detail-text">{store.address}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <lightning-icon icon-name="utility:clock" size="xx-small"></lightning-icon>
+                                            <span class="detail-text">{store.openHours}</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <lightning-icon icon-name="utility:call" size="xx-small"></lightning-icon>
+                                            <span class="detail-text">{store.phone}</span>
+                                        </div>
+                                        <div class="detail-meta slds-m-top_x-small">
+                                            <span class="distance-badge">{store.distance}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    
+                    <template if:false={hasStores}>
+                        <div class="empty-msg">No store recommendations found.</div>
+                    </template>
+                </template>
+            </template>
+
+            <template if:false={isCustomerSelected}>
+                <div class="empty-msg">
+                    Select a customer to see store recommendations.
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>
