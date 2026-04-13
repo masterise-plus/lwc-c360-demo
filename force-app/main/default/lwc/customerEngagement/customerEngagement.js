@@ -21,13 +21,13 @@ export default class CustomerEngagement extends LightningElement {
     // Filter Default
     @track filters = {
         eventType: 'ALL',
-        bu: 'OCBC',
+        bu: 'iBox',
         keyword: ''
     };
 
     @track draftFilters = {
         eventType: 'ALL',
-        bu: 'OCBC',
+        bu: 'iBox',
         keyword: ''
     };
 
@@ -49,7 +49,7 @@ export default class CustomerEngagement extends LightningElement {
     resetFiltersToDefault() {
         const defaultFilters = {
             eventType: 'ALL',
-            bu: 'OCBC',
+            bu: 'iBox',
             keyword: ''
         };
 
@@ -174,8 +174,9 @@ export default class CustomerEngagement extends LightningElement {
     }
 
     clearFilters() {
-        this.filters = { eventType: 'ALL', bu: 'OCBC', keyword: '' };
-        this.isFilterModalOpen = false;
+        const defaultFilters = { eventType: 'ALL', bu: 'iBox', keyword: '' };
+        this.filters = { ...defaultFilters };
+        this.draftFilters = { ...defaultFilters };
     }
 
     openAllDataModal() { this.isAllDataModalOpen = true; }

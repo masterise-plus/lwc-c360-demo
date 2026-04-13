@@ -102,6 +102,12 @@
   color: #032d60;
 }
 
+.store-info {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
 /* Show More Button */
 .show-more-wrap {
   display: flex;

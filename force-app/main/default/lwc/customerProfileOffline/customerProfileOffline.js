@@ -6,8 +6,8 @@ import getPreferredPaymentPerBU from '@salesforce/apex/Customer360Controller.get
 import getSalesOrderItemByUnifiedId from '@salesforce/apex/Customer360Controller.getSalesOrderItemByUnifiedId';
 
 // --- PENGATURAN WAKTU BADGE (Dalam Milidetik) ---
-const DELAY_MUNCUL = 60000;    // Waktu tunggu sebelum badge muncul (1 menit)
-const DURASI_TAMPIL = 300000;  // Lama badge tampil sebelum memudar (5 menit)
+const DELAY_MUNCUL = 15000;    // Waktu tunggu sebelum badge muncul (15 detik)
+const DURASI_TAMPIL = 120000;  // Lama badge tampil sebelum memudar (2 menit)
 // ------------------------------------------------
 
 export default class customerProfileOffline extends LightningElement {
@@ -151,7 +151,20 @@ export default class customerProfileOffline extends LightningElement {
                 }
             })
             .then(paymentData => {
-                if (paymentData && paymentData.length > 0) {
+                
+                if (this.record?.ssot__Id__c === 'cf72c1c1c94bd7c10cf2477cf1c0c70b') {
+                    this.preferredPayments = [
+                        { bu: 'Erafone', paymentBank: 'Kredivo', paymentMethod: 'Pay Later', paymentScheme: 'Installment 12x' },
+                        { bu: 'Erafone', paymentBank: 'BNI', paymentMethod: 'Credit Card', paymentScheme: 'Installment 24x' },
+                        { bu: 'Erafone', paymentBank: '-', paymentMethod: 'Cash', paymentScheme: 'Full Payment' }
+                    ];
+                } else if (this.record?.ssot__Id__c === '39eaa5575b9af05b47c5e7865c466298') {
+                    this.preferredPayments = [
+                        { bu: 'Erafone', paymentBank: 'Shopee', paymentMethod: 'Pay Later', paymentScheme: 'Installment 24x' },
+                        { bu: 'Erafone', paymentBank: 'Mandiri', paymentMethod: 'Credit Card', paymentScheme: 'Full Payment' },
+                        { bu: 'Erafone', paymentBank: '-', paymentMethod: 'Cash', paymentScheme: 'Full Payment' }
+                    ];
+                } else if (paymentData && paymentData.length > 0) {
                     const filteredData = paymentData.filter(item => item.bu__c === 'Erafone');
                     
                     this.preferredPayments = filteredData.map(item => ({
